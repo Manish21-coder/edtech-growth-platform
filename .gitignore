@@ -1,0 +1,64 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing / coverage
+/coverage
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# caches
+.turbo
+*.tsbuildinfo
+
+# misc
+.DS_Store
+Thumbs.db
+
+# editors / local tooling
+# Obsidian is used only as a local Markdown viewer for docs/ — never commit its workspace.
+.obsidian/
+.idea/
+*.swp
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+
+# secrets & environment — never commit real values; .env.example is the only tracked env file
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# vercel
+.vercel
+
+# typescript
+next-env.d.ts
+
+# local Claude Code settings (machine-specific; shared rules/skills ARE committed)
+.claude/settings.local.json

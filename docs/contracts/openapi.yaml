@@ -1,0 +1,154 @@
+openapi: 3.1.0
+
+# Status: PROPOSED SKELETON — no API endpoints are implemented yet.
+# This file is the contract-first source of truth for all external and
+# cross-module HTTP APIs (see .claude/rules/api.md). Add a path here BEFORE
+# writing its handler. Version externally consumed APIs and define a deprecation
+# window. Generate types/clients from this file where practical.
+
+info:
+  title: EdTech Growth Platform API
+  version: 0.0.0
+  description: >-
+    Contract-first HTTP API for the EdTech Growth Platform. No endpoints are
+    implemented yet. Conventions below are mandatory for every future endpoint.
+  contact:
+    name: Product owner
+    email: parikshe_support@parikshe.in
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development (proposed base path)
+
+tags:
+  - name: system
+    description: Health and metadata.
+
+paths:
+  /health:
+    get:
+      tags: [system]
+      operationId: getHealth
+      summary: Liveness/readiness probe (proposed)
+      responses:
+        "200":
+          description: Service is up.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+
+  # --- All product endpoints are PROPOSED and intentionally not defined yet. ---
+  # When adding one, follow .claude/rules/api.md:
+  #  - validate path/query/headers/body at the boundary
+  #  - authN + object-level authZ + tenant scoping server-side
+  #  - Idempotency-Key on retryable mutations (leads, payments, webhooks)
+  #  - paginate list endpoints; cap page size
+  #  - consistent Error object; never leak stack traces or secrets
+  #  - verify webhook signatures against the raw body + replay window
+
+components:
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: Client-generated key; a retried request returns the original result.
+      schema:
+        type: string
+        minLength: 16
+        maxLength: 128
+    Page:
+      name: page
+      in: query
+      required: false
+      schema: { type: integer, minimum: 1, default: 1 }
+    PageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+
+  schemas:
+    Health:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status: { type: string, enum: [ok, degraded] }
+        version: { type: string }
+
+    Error:
+      description: Standard error object for every non-2xx response.
+      type: object
+      additionalProperties: false
+      required: [code, message, request_id]
+      properties:
+        code:
+          type: string
+          description: Stable, machine-readable error code (e.g. VALIDATION_FAILED).
+        message:
+          type: string
+          description: Safe, human-readable summary. Never contains secrets or stack traces.
+        request_id:
+          type: string
+          description: Correlates with logs/traces.
+        fields:
+          type: array
+          description: Optional per-field validation errors.
+          items:
+            type: object
+            additionalProperties: false
+            required: [path, code]
+            properties:
+              path: { type: string }
+              code: { type: string }
+              message: { type: string }
+
+    PageMeta:
+      type: object
+      additionalProperties: false
+      required: [page, pageSize, total]
+      properties:
+        page: { type: integer }
+        pageSize: { type: integer }
+        total: { type: integer }
+
+  responses:
+    BadRequest:
+      description: Request failed validation.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Unauthorized:
+      description: Missing or invalid credentials.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Forbidden:
+      description: Authenticated but not allowed to act on this object/tenant.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    TooManyRequests:
+      description: Rate limit exceeded.
+      headers:
+        Retry-After:
+          schema: { type: integer }
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: session
+      description: Cookie-authenticated (CSRF protection required for mutations).
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: For service-to-service / external API consumers (proposed).
+
+security:
+  - sessionCookie: []

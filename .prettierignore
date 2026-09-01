@@ -1,0 +1,16 @@
+# Build output & dependencies
+.next/
+out/
+build/
+coverage/
+node_modules/
+playwright-report/
+test-results/
+blob-report/
+
+# Generated / lockfiles
+package-lock.json
+next-env.d.ts
+
+# Verbatim archive — must never be reformatted
+docs/_archive/CLAUDE.original.md
