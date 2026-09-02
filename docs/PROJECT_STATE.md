@@ -7,16 +7,17 @@ Last updated: 2026-09-01
 
 ## Live / deploy
 
-- **Repo:** <https://github.com/Manish21-coder/edtech-growth-platform> — set
-  **private** by the product owner (2026-09-02).
-- **GitHub Pages is currently disabled**: Pages on a **private** repo needs
-  GitHub Pro/Team. The `.github/workflows/deploy.yml` (static export →
-  `NEXT_PUBLIC_BASE_PATH=/edtech-growth-platform`, `asset()` prefixes raw
-  `<img>`) is ready and worked while the repo was public.
-- **To get a shareable link, pick one:** (a) make the repo public again — Pages
-  redeploys automatically; (b) connect the repo to Vercel/Netlify/Cloudflare
-  Pages (free, works with private repos, ~2 min, needs the owner to sign in);
-  (c) GitHub Pro. Production target is still deferred.
+- **Site:** <https://manish21-coder.github.io/edtech-growth-platform/> (public
+  repo, redeploys on every push to `main`).
+- **Repo:** <https://github.com/Manish21-coder/edtech-growth-platform>.
+- **Deploy:** static export (`output: "export"`) →
+  `.github/workflows/deploy.yml` builds with
+  `NEXT_PUBLIC_BASE_PATH=/edtech-growth-platform`; `asset()` prefixes raw
+  `<img>` / `<source>` paths. Banner folders are **lowercase**
+  (`hero/desktop`, `hero/mobile`) for the case-sensitive Linux runner. This is
+  a preview host; the production target is still deferred.
+
+**Push only when the product owner asks** ("push to github").
 
 ## Current block
 
