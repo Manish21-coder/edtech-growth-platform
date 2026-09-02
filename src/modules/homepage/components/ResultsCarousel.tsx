@@ -13,6 +13,7 @@ export function ResultsCarousel() {
       id="results"
       eyebrow="Outcomes"
       title="Results across every category"
+      tone="muted"
     >
       <Marquee
         ariaLabel="Category-wise results"

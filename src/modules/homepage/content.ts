@@ -97,23 +97,78 @@ export const CATEGORIES: readonly Category[] = [
   },
 ] as const;
 
-/**
- * Exam shortcuts shown as pill buttons under the intro paragraph. Each links
- * straight to that exam's courses.
- */
-export const INTRO_EXAM_LINKS: readonly {
+const STUDIO_D = "https://studio.parikshe.in/details";
+
+export interface IntroExam {
   id: string;
   label: string;
+  /** "See all" link for the exam. */
   href: string;
-}[] = [
-  { id: "sslc", label: "SSLC", href: `${STUDIO_CLASS}561581` },
-  { id: "puc", label: "PUC", href: `${PURCHASE}/pu-science` },
-  { id: "kcet", label: "KCET", href: `${PURCHASE}/pu-science` },
-  { id: "neet", label: "NEET", href: `${PURCHASE}/pu-science` },
+  /** Courses shown when this pill is hovered/opened. */
+  courses: readonly { label: string; href: string }[];
+}
+
+/**
+ * Exam shortcuts under the intro paragraph. Hovering / tapping a pill opens a
+ * panel with that exam's courses (each links to its studio.parikshe.in page).
+ */
+export const INTRO_EXAMS: readonly IntroExam[] = [
+  {
+    id: "sslc",
+    label: "SSLC",
+    href: `${STUDIO_CLASS}561581`,
+    courses: [
+      { label: "PARIKSHE PRATHAMA Core", href: `${STUDIO_D}?nid=3396397` },
+      { label: "PARIKSHE PRATHAMA Core Plus", href: `${STUDIO_D}?nid=3397261` },
+    ],
+  },
+  {
+    id: "puc",
+    label: "PUC",
+    href: `${PURCHASE}/pu-science`,
+    courses: [
+      { label: "Aarambha KCET Integrated – 1 Year", href: `${STUDIO_D}?nid=3626753` }, // prettier-ignore
+      { label: "Aarambha KCET Integrated – 2 Year", href: `${STUDIO_D}?nid=3963882` }, // prettier-ignore
+      { label: "Aarambha NEET Integrated – 1 Year", href: `${STUDIO_D}?nid=3626939` }, // prettier-ignore
+      { label: "Aarambha NEET Integrated – 2 Year", href: `${STUDIO_D}?nid=3963910` }, // prettier-ignore
+      { label: "Vijeta 360 KCET Integrated", href: `${STUDIO_D}?nid=4316473` },
+      { label: "Vijeta 360 KCET Integrated – Pro", href: `${STUDIO_D}?nid=4317487` }, // prettier-ignore
+      { label: "Vijeta 360 KCET Integrated – NEET Plus", href: `${STUDIO_D}?nid=4317634` }, // prettier-ignore
+      { label: "Sankalpa Core – 1st PUC Commerce", href: `${STUDIO_D}?nid=4571049` }, // prettier-ignore
+      { label: "Sankalpa Core Plus – 1st PUC Commerce", href: `${STUDIO_D}?nid=4571068` }, // prettier-ignore
+      { label: "Sadhaka Pro – 2nd PUC Commerce", href: `${STUDIO_D}?nid=3585596` }, // prettier-ignore
+      { label: "Sadhaka Pro Plus – 2nd PUC Commerce", href: `${STUDIO_D}?nid=4221121` }, // prettier-ignore
+    ],
+  },
+  {
+    id: "kcet",
+    label: "KCET",
+    href: `${PURCHASE}/pu-science`,
+    courses: [
+      { label: "Aarambha KCET Integrated – 1 Year", href: `${STUDIO_D}?nid=3626753` }, // prettier-ignore
+      { label: "Aarambha KCET Integrated – 2 Year", href: `${STUDIO_D}?nid=3963882` }, // prettier-ignore
+      { label: "Vijeta 360 KCET Integrated", href: `${STUDIO_D}?nid=4316473` },
+      { label: "Vijeta 360 KCET Integrated – Pro", href: `${STUDIO_D}?nid=4317487` }, // prettier-ignore
+    ],
+  },
+  {
+    id: "neet",
+    label: "NEET",
+    href: `${PURCHASE}/pu-science`,
+    courses: [
+      { label: "Aarambha NEET Integrated – 1 Year", href: `${STUDIO_D}?nid=3626939` }, // prettier-ignore
+      { label: "Aarambha NEET Integrated – 2 Year", href: `${STUDIO_D}?nid=3963910` }, // prettier-ignore
+      { label: "Vijeta 360 KCET Integrated – NEET Plus", href: `${STUDIO_D}?nid=4317634` }, // prettier-ignore
+    ],
+  },
   {
     id: "ca-foundation",
     label: "CA Foundation",
     href: `${STUDIO_CLASS}4125644`,
+    courses: [
+      { label: "Nischaya Pro – Sep'26 & Jan'27", href: `${STUDIO_D}?nid=4131156` }, // prettier-ignore
+      { label: "Nischaya Pro Plus – Sep'26 & Jan'27", href: `${STUDIO_D}?nid=4131167` }, // prettier-ignore
+    ],
   },
 ] as const;
 
@@ -312,8 +367,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "puc-kcet",
     type: "product",
-    image: "/banners/hero/aarambha-kcet.png",
-    imageMobile: "/banners/hero/aarambha-kcet-mobile.png",
+    image: "/banners/hero/desktop/aarambha-kcet.png",
+    imageMobile: "/banners/hero/mobile/aarambha-kcet.png",
     alt: "1st PUC Aarambha — KCET Integrated 2026-27. Crack KCET with expert guidance. 200+ daily live classes, 50+ practice tests, PYQ solutions. ₹3,499.",
     headline: "1st PUC Aarambha — KCET Integrated 2026–27",
     supportingText:
@@ -324,8 +379,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "puc-neet",
     type: "product",
-    image: "/banners/hero/aarambha-neet.png",
-    imageMobile: "/banners/hero/aarambha-neet-mobile.png",
+    image: "/banners/hero/desktop/aarambha-neet.png",
+    imageMobile: "/banners/hero/mobile/aarambha-neet.png",
     alt: "1st PUC Aarambha — NEET Integrated 2026-27. Crack NEET with expert guidance. ₹4,499.",
     headline: "1st PUC Aarambha — NEET Integrated 2026–27",
     supportingText:
@@ -336,8 +391,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "ca-foundation-nischaya",
     type: "product",
-    image: "/banners/hero/nischaya-2-tires.png",
-    imageMobile: "/banners/hero/nischaya-2-tires-mobile.png",
+    image: "/banners/hero/desktop/nischaya.png",
+    imageMobile: "/banners/hero/mobile/nischaya.png",
     alt: "CA Foundation Nischaya. Nischaya Pro ₹5,999, Nischaya Pro+ ₹8,999. January attempt.",
     headline: "CA Foundation Nischaya",
     supportingText:
@@ -348,8 +403,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "prathama-core-plus",
     type: "product",
-    image: "/banners/hero/prathama-plus.png",
-    imageMobile: "/banners/hero/prathama-plus-mobile.png",
+    image: "/banners/hero/desktop/prathama-core-plus.png",
+    imageMobile: "/banners/hero/mobile/prathama-core-plus.png",
     alt: "Parikshe Prathama Core Plus for SSLC batch of 2027. Maths, Science, Social Science, English and Kannada (1st & 2nd language). ₹2,499 for the full year.",
     headline: "Parikshe Prathama Core Plus — SSLC 2027",
     supportingText:
@@ -360,8 +415,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "prathama-core",
     type: "product",
-    image: "/banners/hero/prathama.png",
-    imageMobile: "/banners/hero/prathama-mobile.png",
+    image: "/banners/hero/desktop/prathama-core.png",
+    imageMobile: "/banners/hero/mobile/prathama-core.png",
     alt: "Parikshe Prathama Core for SSLC batch of 2027. Maths, Science, Social Science. ₹2,199 for the full year.",
     headline: "Parikshe Prathama Core — SSLC 2027",
     supportingText:
@@ -372,8 +427,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "sadhaka-pro-commerce",
     type: "product",
-    image: "/banners/hero/sadhaka.png",
-    imageMobile: "/banners/hero/sadhaka-mobile.png",
+    image: "/banners/hero/desktop/sadhaka-pro.png",
+    imageMobile: "/banners/hero/mobile/sadhaka-pro.png",
     alt: "Sadhaka Pro — 2nd PUC Commerce 2026-27. Trusted by 30,000+ students. Live classes and recordings, solved question bank, practice tests. ₹3,499.",
     headline: "Sadhaka Pro — 2nd PUC Commerce 2026–27",
     supportingText:
@@ -384,8 +439,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "sankalpa-core-commerce",
     type: "product",
-    image: "/banners/hero/sankalpa-core.png",
-    imageMobile: "/banners/hero/sankalpa-core-mobile.png",
+    image: "/banners/hero/desktop/sankalpa-core.png",
+    imageMobile: "/banners/hero/mobile/sankalpa-core.png",
     alt: "Sankalpa Core — 1st PUC Commerce 2026-2027. Solved question bank, PYQs with solutions, mind maps, sample question paper.",
     headline: "Sankalpa Core — 1st PUC Commerce 2026–27",
     supportingText:
@@ -396,8 +451,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "vijeta-360",
     type: "product",
-    image: "/banners/hero/vijeta.png",
-    imageMobile: "/banners/hero/vijeta-mobile.png",
+    image: "/banners/hero/desktop/vijeta-360.png",
+    imageMobile: "/banners/hero/mobile/vijeta-360.png",
     alt: "2nd PUC Vijeta 360 — KCET Integrated. 06 April 2026 to 31 December 2026. Daily lives, practice tests, PYQ solutions. ₹3,999.",
     headline: "2nd PUC Vijeta 360 — KCET Integrated",
     supportingText:
@@ -541,47 +596,57 @@ export const WHY_CHOOSE: readonly WhyChooseItem[] = [
 export interface ComparisonRow {
   parameter: string;
   free: string;
+  /** How the free tier scores this row — drives the ✗ / ~ marker. */
+  freeState: "no" | "limited";
   paid: string;
 }
 
 /**
- * HP-090 / HP-091 — ONE reusable Free-vs-Paid comparison, rendered ONCE.
- * "Doubt Solving" under free = "Limited" (product-owner decision 2026-09-01).
+ * HP-090 / HP-091 — ONE reusable Free-vs-Paid comparison, rendered ONCE as a
+ * tick/cross table. "Doubt solving" under free = "Limited" (product-owner
+ * decision 2026-09-01).
  */
 export const FREE_VS_PAID: readonly ComparisonRow[] = [
   {
     parameter: "Structured learning",
     free: "Self-managed",
+    freeState: "limited",
     paid: "Structured plan aligned with the syllabus",
   },
   {
     parameter: "Live classes",
     free: "Limited",
+    freeState: "limited",
     paid: "Live classes on the Parikshe app",
   },
   {
     parameter: "Doubt solving",
     free: "Limited",
-    paid: "Doubt Support",
+    freeState: "limited",
+    paid: "Doubt support",
   },
   {
     parameter: "Study material",
     free: "Not included",
+    freeState: "no",
     paid: "Curated notes, previous-year papers & mock tests",
   },
   {
     parameter: "Practice & assessment",
     free: "Self-managed",
+    freeState: "limited",
     paid: "Integrated tests & practice",
   },
   {
     parameter: "Revision support",
     free: "Self-managed",
+    freeState: "limited",
     paid: "Planned revision & exam preparation",
   },
   {
     parameter: "Guidance & progress",
     free: "No personalised guidance",
+    freeState: "no",
     paid: "Guided preparation with progress tracking",
   },
 ] as const;

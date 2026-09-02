@@ -8,7 +8,12 @@ import { Section } from "./primitives";
  */
 export function HomepageFaq() {
   return (
-    <Section id="faq" eyebrow="Questions" title="Frequently asked questions">
+    <Section
+      id="faq"
+      eyebrow="Questions"
+      title="Frequently asked questions"
+      tone="muted"
+    >
       <div className="divide-border border-border bg-surface mx-auto max-w-3xl divide-y rounded-2xl border px-5 sm:px-7">
         {FAQ_ITEMS.map((item) => (
           <details key={item.id} className="group py-5">

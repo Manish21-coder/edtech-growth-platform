@@ -109,7 +109,7 @@ optional for `<640px` (undefined for now → desktop image used everywhere).
 Auto-advances (5s, pauses on hover/focus/hidden tab, off under reduced-motion),
 whole banner clickable (no text overlaid), pagination dots overlaid slim near
 the bottom, hover arrows. The **product owner supplied both crops per banner** —
-`public/banners/hero/<name>.png` (desktop 8:3, 2400×900) + `<name>-mobile.png`
+`public/banners/hero/desktop/<slug>.png` (8:3) + `hero/mobile/<slug>.png` (16:10)
 (mobile 16:10, 1200×750); `Slide` uses a `<picture>` (desktop above 640px,
 mobile below) and checks `img.complete` on mount. Filenames + nids in the
 `public/banners/README.md` (folder per section) and `HERO_BANNERS` (`image` + `imageMobile`).
@@ -142,6 +142,19 @@ section** — `hero/` (`HERO_BANNERS`, 8 desktop + 8 mobile crops) and `popup/`
 (`PROMO_POPUP`). Top-level `README.md` documents the layout and notes it maps
 1:1 to the future admin "Banners" config. CA Foundation dropdown/Explore pills
 dropped "Nischaya – Sep'26" (kept Pro + Pro Plus).
+
+**Section order (2026-09-02):** hero → **Explore courses by class** →
+**Introduction (exam picker)** → **Results** → **Student stories** → Why
+Parikshe → App → Study resources → Free vs Paid → FAQ → Contact. Tones now
+alternate white / muted cleanly (Results & FAQ made `muted`, Stories made
+white).
+
+**Intro exam picker (2026-09-02):** the intro section's exam pills are now a
+`IntroExamPicker` client component — hover / focus / tap a pill (SSLC · PUC ·
+KCET · NEET · CA Foundation) and a panel below shows **that exam's full course
+list** in a 2-col grid + a "See all" link (`INTRO_EXAMS` in `content.ts`). Also:
+floating right-edge WhatsApp + "Download Parikshe app" buttons
+(`FloatingActions.tsx`); WhatsApp icon is now a proper filled glyph.
 
 **Icon pass (2026-09-02):** new reusable `Icon.tsx` — 15 line icons + a
 `GooglePlayBadge` SVG (recreation of the store mark). Applied to cut text

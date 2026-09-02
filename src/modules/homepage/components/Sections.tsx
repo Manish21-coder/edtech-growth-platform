@@ -2,7 +2,6 @@ import Image from "next/image";
 import {
   APP_STORE,
   FREE_VS_PAID,
-  INTRO_EXAM_LINKS,
   SCALE_METRICS,
   STUDENT_STORIES,
   STUDY_RESOURCES,
@@ -10,6 +9,7 @@ import {
 } from "../content";
 import { Section, Card, ButtonLink, FeatureIcon } from "./primitives";
 import { Icon, GooglePlayBadge, type IconName } from "./Icon";
+import { IntroExamPicker } from "./IntroExamPicker";
 import { VideoTestimonialButton } from "./VideoTestimonialButton";
 import { Marquee } from "./Marquee";
 import { SidePromoCarousel } from "./SidePromoCarousel";
@@ -27,7 +27,7 @@ export function IntroAndChips() {
       aria-labelledby="intro-heading"
       className="bg-surface scroll-mt-20 px-4 py-12 sm:px-6 sm:py-16"
     >
-      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
+      <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
         {/* left: the pitch */}
         <div>
           <p className="text-brand-gold-ink mb-3 flex items-center gap-2 text-xs font-bold tracking-[0.16em] uppercase">
@@ -42,21 +42,10 @@ export function IntroAndChips() {
           </h2>
           <p className="text-text-muted mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
             Live classes, curated notes, previous-year papers and practice tests
-            in Kannada and English. Pick your exam:
+            in Kannada and English. Hover an exam to see its courses:
           </p>
 
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {INTRO_EXAM_LINKS.map((e) => (
-              <li key={e.id}>
-                <a
-                  href={e.href}
-                  className="border-brand-gold-600/50 text-brand-gold-ink hover:bg-surface-accent inline-flex rounded-full border bg-white px-3.5 py-1.5 text-sm font-bold transition-colors"
-                >
-                  {e.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <IntroExamPicker />
 
           <div className="mt-6 flex flex-wrap gap-3">
             <ButtonLink href="#explore-courses" variant="primary">
@@ -233,7 +222,39 @@ export function StudyResources() {
   );
 }
 
-/** HP-090 / HP-091 — Free-vs-Paid, ONE component, rendered as TWO columns. */
+/** Tick / cross / limited marker for one Free-vs-Paid cell. */
+function CompareMark({
+  state,
+  label,
+}: {
+  state: "yes" | "no" | "limited";
+  label: string;
+}) {
+  const cfg = {
+    yes: { icon: "check" as IconName, cls: "bg-cta-bg text-cta-text" },
+    no: { icon: "x" as IconName, cls: "bg-[#fdecec] text-[#b3261e]" },
+    limited: {
+      icon: "minus" as IconName,
+      cls: "bg-surface-accent text-brand-gold-ink",
+    },
+  }[state];
+  return (
+    <span className="inline-flex flex-col items-center gap-1">
+      <span
+        aria-hidden="true"
+        className={`grid h-6 w-6 place-items-center rounded-full ${cfg.cls}`}
+      >
+        <Icon name={cfg.icon} className="h-3.5 w-3.5" strokeWidth={3} />
+      </span>
+      <span className="text-text-muted hidden text-[11px] leading-tight sm:block">
+        {label}
+      </span>
+      <span className="sr-only">{label}</span>
+    </span>
+  );
+}
+
+/** HP-090 / HP-091 — Free-vs-Paid, ONE component, rendered as a compare table. */
 export function FreeVsPaid() {
   return (
     <Section
@@ -242,82 +263,58 @@ export function FreeVsPaid() {
       title="Free YouTube content vs paid Parikshe products"
       intro="Both have their place — here is what a structured paid programme adds."
     >
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Free column */}
-        <div className="border-border bg-surface rounded-2xl border p-6 sm:p-8">
-          <span className="bg-surface-muted text-text-muted grid h-11 w-11 place-items-center rounded-xl">
-            <Icon name="youtube" className="h-6 w-6" />
-          </span>
-          <h3 className="text-text-primary mt-3 text-xl font-bold">
-            Free YouTube content
-          </h3>
-          <p className="text-text-muted mt-1 text-sm">
-            Self-paced learning from public videos.
-          </p>
-          <ul className="divide-border mt-6 divide-y">
-            {FREE_VS_PAID.map((row) => (
-              <li
-                key={row.parameter}
-                className="flex items-start gap-3 py-3.5 text-sm"
+      <div className="border-border bg-surface mx-auto max-w-2xl overflow-hidden rounded-2xl border shadow-sm">
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="border-border border-b">
+              <th
+                scope="col"
+                className="text-text-primary p-3 font-bold sm:p-4"
               >
-                <span
-                  aria-hidden="true"
-                  className="bg-surface-muted text-text-muted mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
+                Feature
+              </th>
+              <th
+                scope="col"
+                className="text-text-muted p-3 text-center font-bold"
+              >
+                Free
+              </th>
+              <th
+                scope="col"
+                className="bg-surface-accent text-brand-gold-ink p-3 text-center font-bold"
+              >
+                Paid
+                <span className="block text-[10px] font-bold tracking-wide uppercase">
+                  Recommended
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-border divide-y">
+            {FREE_VS_PAID.map((row) => (
+              <tr key={row.parameter}>
+                <th
+                  scope="row"
+                  className="text-text-primary p-3 text-left font-semibold sm:p-4"
                 >
-                  <Icon name="minus" className="h-3 w-3" strokeWidth={2.5} />
-                </span>
-                <span>
-                  <span className="text-text-primary font-semibold">
-                    {row.parameter}:{" "}
-                  </span>
-                  <span className="text-text-muted">{row.free}</span>
-                </span>
-              </li>
+                  {row.parameter}
+                </th>
+                <td className="p-3 text-center align-top">
+                  <CompareMark state={row.freeState} label={row.free} />
+                </td>
+                <td className="bg-surface-accent/50 p-3 text-center align-top">
+                  <CompareMark state="yes" label={row.paid} />
+                </td>
+              </tr>
             ))}
-          </ul>
-        </div>
+          </tbody>
+        </table>
+      </div>
 
-        {/* Paid column — highlighted */}
-        <div className="border-brand-gold bg-surface relative rounded-2xl border-2 p-6 shadow-[0_16px_40px_-12px_rgba(234,179,8,0.35)] sm:p-8">
-          <span className="bg-cta-bg text-cta-text absolute -top-3 left-6 rounded-full px-3 py-1 text-xs font-bold">
-            Recommended
-          </span>
-          <span className="bg-cta-bg text-cta-text grid h-11 w-11 place-items-center rounded-xl">
-            <Icon name="sparkle" className="h-6 w-6" />
-          </span>
-          <h3 className="text-text-primary mt-3 text-xl font-bold">
-            Paid Parikshe products
-          </h3>
-          <p className="text-text-muted mt-1 text-sm">
-            A structured programme aligned to your exam.
-          </p>
-          <ul className="divide-border mt-6 divide-y">
-            {FREE_VS_PAID.map((row) => (
-              <li
-                key={row.parameter}
-                className="flex items-start gap-3 py-3.5 text-sm"
-              >
-                <span
-                  aria-hidden="true"
-                  className="bg-cta-bg text-cta-text mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
-                >
-                  <Icon name="check" className="h-3 w-3" strokeWidth={3} />
-                </span>
-                <span>
-                  <span className="text-text-primary font-semibold">
-                    {row.parameter}:{" "}
-                  </span>
-                  <span className="text-text-muted">{row.paid}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-7">
-            <ButtonLink href="#explore-courses" variant="primary">
-              Explore paid courses
-            </ButtonLink>
-          </div>
-        </div>
+      <div className="mt-6 flex justify-center">
+        <ButtonLink href="#explore-courses" variant="primary">
+          Explore paid courses
+        </ButtonLink>
       </div>
     </Section>
   );
@@ -330,7 +327,6 @@ export function StudentStories() {
       id="stories"
       eyebrow="Student stories"
       title="Students love Parikshe"
-      tone="muted"
     >
       <Marquee
         ariaLabel="Student testimonials"

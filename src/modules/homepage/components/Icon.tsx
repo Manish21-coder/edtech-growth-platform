@@ -16,6 +16,7 @@ export type IconName =
   | "instagram"
   | "download"
   | "check"
+  | "x"
   | "minus";
 
 const PATHS: Record<IconName, ReactNode> = {
@@ -82,6 +83,7 @@ const PATHS: Record<IconName, ReactNode> = {
   ),
   download: <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />,
   check: <path d="m5 13 4 4L19 7" />,
+  x: <path d="M6 6l12 12M18 6 6 18" />,
   minus: <path d="M6 12h12" />,
 };
 

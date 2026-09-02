@@ -56,12 +56,12 @@ export function Homepage() {
 
         <ExploreCourses />
         <IntroAndChips />
+        <ResultsCarousel />
+        <StudentStories />
         <WhyChoose />
         <AppPromo />
         <StudyResources />
         <FreeVsPaid />
-        <ResultsCarousel />
-        <StudentStories />
         <HomepageFaq />
         <SiteFooter />
       </main>

@@ -80,24 +80,23 @@ Homepage-specific journey. Traceability: `docs/requirements/HOMEPAGE_REQUIREMENT
 
 ```mermaid
 flowchart TD
-  start(["Visitor lands on homepage"]) --> hero["Hero banner carousel<br/>(campaign.impression_recorded)"]
-  hero --> intro["Introduction + category chips (HP-030/031)"]
-  intro -- "knows category" --> chipClick["Chip click → deep-link to category page<br/>(homepage.category_selected, cta.clicked)"]
-  intro -- "undecided" --> why["Why Choose Parikshe"] --> discover["Exam/Category Discovery cards (HP-050)"]
-  discover --> explore["Explore Now → category/study page"]
-  intro -- "5s dwell elapses" --> popupElig{"Popup eligible?<br/>(HP-320-327: 1x/session, 24h after dismiss, suppressed 30d post-lead)"}
-  popupElig -- yes --> popup["Promo popup shown<br/>(homepage.popup_viewed)"]
-  popup -- dismiss --> popupDismiss["Dismissed<br/>(homepage.popup_dismissed, 24h suppression)"]
+  start(["Visitor lands on homepage"]) --> hero["Hero banner carousel + Classes strip<br/>(campaign.impression_recorded)"]
+  hero --> explore["Explore courses by class (HP-013)<br/>class card → studio.parikshe.in"]
+  explore --> intro["Introduction — exam picker (HP-030/031)<br/>hover pill → that exam's courses"]
+  intro -- "course click" --> courseOut["studio.parikshe.in course page<br/>(homepage.category_selected, cta.clicked)"]
+  intro --> results["Category-wise Results"] --> stories["Student Stories / Testimonials"]
+  stories --> why["Why Parikshe"] --> app["Parikshe app + study resources"] --> compare["Free vs Paid"] --> faq["FAQ"]
+  intro -- "5s dwell elapses" --> popupElig{"Popup eligible?<br/>(HP-320-327: repeat 10 min, 30d after lead)"}
+  popupElig -- yes --> popup["Promo popup — image only<br/>(homepage.popup_viewed)"]
+  popup -- dismiss --> popupDismiss["Dismissed<br/>(homepage.popup_dismissed)"]
   popup -- click --> popupClick["homepage.popup_clicked<br/>(not a completed conversion — HP-324)"]
-  discover --> results["Category-wise Results"] --> stories["Student Stories / Testimonials"]
-  stories --> faq["FAQ"]
-  faq --> leadEntry{"Lead-capture entry point<br/>(HP-410/411/412)"}
+  faq --> leadEntry{"Lead-capture entry point<br/>(HP-410/411/412 + floating WhatsApp / Download app)"}
   leadEntry --> form["Shared lead form<br/>(default/focused/error/submitting/success/failure/duplicate/consent states)"]
   form --> submitOk["lead.submitted<br/>(HP-323: suppress lead-gen popups 30d)"]
   form -- error --> formErr["Inline error + retry<br/>(input preserved)"] --> form
 
   classDef proposed stroke-dasharray:4 3,fill:#fff;
-  class start,hero,intro,chipClick,why,discover,explore,popupElig,popup,popupDismiss,popupClick,results,stories,faq,leadEntry,form,submitOk,formErr proposed;
+  class start,hero,explore,intro,courseOut,results,stories,why,app,compare,faq,popupElig,popup,popupDismiss,popupClick,leadEntry,form,submitOk,formErr proposed;
 ```
 
 ## Parent / guardian (Proposed)

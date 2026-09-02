@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   APP_STORE,
   CLASS_COURSES,
@@ -45,6 +45,32 @@ function PhoneIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+/** Shared style for the top-level nav items (Courses / Books / Download app). */
+function navItemClass(active: boolean) {
+  return `inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${
+    active
+      ? "bg-surface-accent text-brand-gold-ink"
+      : "text-text-primary hover:bg-surface-accent hover:text-brand-gold-ink"
+  }`;
+}
+
+function DownloadIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="h-4 w-4"
+    >
+      <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+    </svg>
+  );
+}
+
 function Chevron({ open }: { open: boolean }) {
   return (
     <svg
@@ -55,10 +81,21 @@ function Chevron({ open }: { open: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
+      className={`h-3.5 w-3.5 transition-transform ${
+        open ? "text-brand-gold-600 rotate-180" : ""
+      }`}
     >
       <path d="m6 9 6 6 6-6" />
     </svg>
+  );
+}
+
+/** Small uppercase gold label used above each mega-menu column. */
+function MenuLabel({ children }: { children: ReactNode }) {
+  return (
+    <p className="font-display text-brand-gold-ink text-[11px] font-extrabold tracking-[0.14em] uppercase">
+      {children}
+    </p>
   );
 }
 
@@ -84,7 +121,7 @@ function BookLinks({
               });
               onNavigate?.();
             }}
-            className="text-text-muted hover:bg-surface-accent hover:text-text-primary block rounded-md px-2 py-1.5 text-sm"
+            className="text-text-muted hover:bg-surface hover:text-brand-gold-ink block rounded-lg px-2.5 py-1.5 text-sm font-medium"
           >
             {b.label}
           </a>
@@ -110,17 +147,18 @@ function ClassAccordion({
       {CLASS_COURSES.map((c) => {
         const expanded = activeClass === c.id;
         return (
-          <div
-            key={c.id}
-            className="border-border/60 border-b py-1 last:border-b-0"
-          >
+          <div key={c.id} className="py-0.5">
             <button
               type="button"
               aria-expanded={expanded}
               onClick={() => setActiveClass((a) => (a === c.id ? "" : c.id))}
               onMouseEnter={() => setActiveClass(() => c.id)}
               onFocus={() => setActiveClass(() => c.id)}
-              className="text-text-primary hover:bg-surface-muted flex w-full items-center justify-between gap-2 rounded-md px-2 py-2 text-sm font-semibold"
+              className={`flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-sm font-bold transition-colors ${
+                expanded
+                  ? "bg-cta-bg text-cta-text"
+                  : "text-text-primary hover:bg-surface-accent hover:text-brand-gold-ink"
+              }`}
             >
               {c.label}
               <svg
@@ -131,14 +169,14 @@ function ClassAccordion({
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 aria-hidden="true"
-                className={`text-text-muted h-3.5 w-3.5 shrink-0 transition-transform ${
+                className={`h-3.5 w-3.5 shrink-0 transition-transform ${
                   expanded ? "rotate-90" : ""
                 }`}
               >
                 <path d="m9 18 6-6-6-6" />
               </svg>
             </button>
-            <ul hidden={!expanded} className="mb-2 ml-1 flex flex-col gap-0.5">
+            <ul hidden={!expanded} className="mt-0.5 mb-1 ml-2 flex flex-col">
               {c.courses.map((p) => (
                 <li key={p.href}>
                   <a
@@ -150,7 +188,7 @@ function ClassAccordion({
                       });
                       onNavigate?.();
                     }}
-                    className="text-text-muted hover:bg-surface-accent hover:text-text-primary block rounded-md px-2 py-1.5 text-sm"
+                    className="text-text-muted hover:bg-surface hover:text-brand-gold-ink block rounded-md px-2.5 py-1.5 text-sm font-medium"
                   >
                     {p.label}
                   </a>
@@ -167,11 +205,11 @@ function ClassAccordion({
 /**
  * HP-010 / HP-011 / HP-012 — Vedantu-style header.
  *
- * - `lg+`: wordmark + "Courses" mega-menu + "Books" menu + "Talk to our
- *   expert" (phone + lead form) + Login / Register. Menus open on hover +
+ * - `lg+`: wordmark + Courses mega-menu (2 cols: classes | books) + Books menu
+ *   + Download app + a call pill + Login / Register. Menus open on hover +
  *   click, close on Escape / outside-click / mouse-leave.
  * - `<lg`: hamburger + wordmark + call icon + Login. The hamburger opens a
- *   drawer with the same courses/books/expert content.
+ *   drawer with the same courses / books / app / expert content.
  */
 export function SiteHeader() {
   const [menu, setMenu] = useState<OpenMenu>(null);
@@ -264,7 +302,7 @@ export function SiteHeader() {
         {/* Desktop nav */}
         <nav
           aria-label="Primary"
-          className="hidden flex-1 items-center gap-1 lg:flex"
+          className="hidden flex-1 items-center gap-0.5 lg:flex"
         >
           <div>
             <button
@@ -273,7 +311,7 @@ export function SiteHeader() {
               aria-controls="nav-courses-panel"
               onClick={() => toggle("courses")}
               onMouseEnter={() => setMenu("courses")}
-              className="text-text-muted hover:text-text-primary aria-expanded:text-text-primary inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold"
+              className={navItemClass(menu === "courses")}
             >
               Courses
               <Chevron open={menu === "courses"} />
@@ -282,22 +320,20 @@ export function SiteHeader() {
             <div
               id="nav-courses-panel"
               hidden={menu !== "courses"}
-              className="border-border bg-surface absolute top-full left-0 z-50 mt-1 w-96 rounded-2xl border shadow-xl"
+              className="border-brand-gold-600/30 bg-surface absolute top-full left-0 z-50 mt-2 w-[620px] overflow-hidden rounded-2xl border shadow-2xl"
             >
-              <div className="max-h-[75vh] overflow-y-auto p-6">
-                <p className="font-display text-text-muted text-xs font-bold tracking-wide uppercase">
-                  Find courses by class
-                </p>
-                <div className="mt-2">
-                  <ClassAccordion
-                    activeClass={activeClass}
-                    setActiveClass={setActiveClass}
-                  />
+              <div className="grid grid-cols-[1fr_0.82fr]">
+                <div className="max-h-[70vh] overflow-y-auto p-5">
+                  <MenuLabel>Find courses by class</MenuLabel>
+                  <div className="mt-2">
+                    <ClassAccordion
+                      activeClass={activeClass}
+                      setActiveClass={setActiveClass}
+                    />
+                  </div>
                 </div>
-                <div className="border-border mt-4 border-t pt-4">
-                  <p className="font-display text-text-muted text-xs font-bold tracking-wide uppercase">
-                    Find popular books
-                  </p>
+                <div className="border-brand-gold-600/20 bg-surface-accent/60 border-l p-5">
+                  <MenuLabel>Find popular books</MenuLabel>
                   <BookLinks items={GUIDE_BOOKS} groupId="courses-books" />
                 </div>
               </div>
@@ -311,7 +347,7 @@ export function SiteHeader() {
               aria-controls="nav-books-panel"
               onClick={() => toggle("books")}
               onMouseEnter={() => setMenu("books")}
-              className="text-text-muted hover:text-text-primary aria-expanded:text-text-primary inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold"
+              className={navItemClass(menu === "books")}
             >
               Books
               <Chevron open={menu === "books"} />
@@ -320,14 +356,10 @@ export function SiteHeader() {
             <div
               id="nav-books-panel"
               hidden={menu !== "books"}
-              className="border-border bg-surface absolute top-full left-0 z-50 mt-1 w-96 rounded-2xl border shadow-xl"
+              className="border-brand-gold-600/30 bg-surface absolute top-full left-0 z-50 mt-2 w-80 rounded-2xl border p-5 shadow-2xl"
             >
-              <div className="p-6">
-                <p className="font-display text-text-muted text-xs font-bold tracking-wide uppercase">
-                  Find popular books
-                </p>
-                <BookLinks items={GUIDE_BOOKS} groupId="books" />
-              </div>
+              <MenuLabel>Find popular books</MenuLabel>
+              <BookLinks items={GUIDE_BOOKS} groupId="books" />
             </div>
           </div>
 
@@ -341,71 +373,47 @@ export function SiteHeader() {
                 ctaId: "navbar-download-app",
               })
             }
-            className="text-text-muted hover:text-text-primary inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold"
+            className={navItemClass(false)}
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-              className="h-4 w-4"
-            >
-              <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
-            </svg>
+            <DownloadIcon />
             Download app
           </a>
-
-          <div className="ml-2 flex items-center gap-2.5">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-700">
-              <PhoneIcon />
-            </span>
-            <span className="flex flex-col">
-              <LeadCaptureCta
-                label="Talk to our expert"
-                entryPoint="navbar"
-                variant="bare"
-                className="text-text-muted hover:text-text-primary py-1.5 text-[11px] font-semibold"
-              />
-              {CONTACT.phone ? (
-                <a
-                  href={`tel:${CONTACT.phone}`}
-                  onClick={() =>
-                    emitHomepageEvent({
-                      type: "cta.clicked.v1",
-                      ctaId: "navbar-call",
-                    })
-                  }
-                  className="text-text-primary hover:text-brand-gold-ink py-1 text-sm font-bold tracking-tight"
-                >
-                  {formatPhone(CONTACT.phone)}
-                </a>
-              ) : null}
-            </span>
-          </div>
         </nav>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           {CONTACT.phone ? (
-            <a
-              href={`tel:${CONTACT.phone}`}
-              aria-label="Call Parikshe"
-              onClick={() =>
-                emitHomepageEvent({
-                  type: "cta.clicked.v1",
-                  ctaId: "navbar-call",
-                })
-              }
-              className="text-text-primary bg-surface-muted hover:bg-border grid h-9 w-9 place-items-center rounded-full lg:hidden"
-            >
-              <PhoneIcon />
-            </a>
+            <>
+              <a
+                href={`tel:${CONTACT.phone}`}
+                onClick={() =>
+                  emitHomepageEvent({
+                    type: "cta.clicked.v1",
+                    ctaId: "navbar-call",
+                  })
+                }
+                className="border-brand-gold-600/40 bg-surface-accent text-brand-gold-ink hover:bg-cta-bg hover:text-cta-text hidden items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-bold transition-colors lg:inline-flex"
+              >
+                <PhoneIcon />
+                {formatPhone(CONTACT.phone)}
+              </a>
+              <a
+                href={`tel:${CONTACT.phone}`}
+                aria-label="Call Parikshe"
+                onClick={() =>
+                  emitHomepageEvent({
+                    type: "cta.clicked.v1",
+                    ctaId: "navbar-call",
+                  })
+                }
+                className="border-brand-gold-600/40 text-brand-gold-ink hover:bg-surface-accent grid h-9 w-9 place-items-center rounded-full border lg:hidden"
+              >
+                <PhoneIcon />
+              </a>
+            </>
           ) : null}
           <a
             href="#"
-            className="bg-cta-bg text-cta-text hover:bg-cta-bg-hover shrink-0 rounded-md px-3 py-2 text-sm font-bold shadow-sm sm:px-4"
+            className="bg-cta-bg text-cta-text hover:bg-cta-bg-hover shrink-0 rounded-full px-3.5 py-2 text-sm font-bold shadow-sm sm:px-4"
             onClick={() =>
               emitHomepageEvent({
                 type: "cta.clicked.v1",
@@ -426,9 +434,7 @@ export function SiteHeader() {
         className="border-border bg-surface absolute inset-x-0 top-full z-50 max-h-[80vh] overflow-y-auto border-b shadow-xl lg:hidden"
       >
         <div className="px-4 py-4">
-          <p className="font-display text-text-muted text-xs font-bold tracking-wide uppercase">
-            Find courses by class
-          </p>
+          <MenuLabel>Find courses by class</MenuLabel>
           <div className="mt-2">
             <ClassAccordion
               activeClass={activeClass}
@@ -438,9 +444,7 @@ export function SiteHeader() {
           </div>
 
           <div className="border-border mt-4 border-t pt-4">
-            <p className="font-display text-text-muted text-xs font-bold tracking-wide uppercase">
-              Find popular books
-            </p>
+            <MenuLabel>Find popular books</MenuLabel>
             <BookLinks
               items={GUIDE_BOOKS}
               groupId="mobile-books"
@@ -460,20 +464,9 @@ export function SiteHeader() {
                 });
                 setMobileOpen(false);
               }}
-              className="border-border-strong text-text-primary hover:bg-surface-muted inline-flex items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-bold"
+              className="border-brand-gold-600/40 bg-surface-accent text-brand-gold-ink hover:bg-cta-bg hover:text-cta-text inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-bold"
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                className="h-4 w-4"
-              >
-                <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
-              </svg>
+              <DownloadIcon />
               Download app
             </a>
             <LeadCaptureCta
