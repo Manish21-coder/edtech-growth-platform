@@ -1,15 +1,15 @@
 import Image from "next/image";
 import {
-  CATEGORIES,
-  WHY_CHOOSE,
-  SCALE_METRICS,
-  FREE_VS_PAID,
-  STUDY_RESOURCES,
-  STUDENT_STORIES,
   APP_STORE,
+  FREE_VS_PAID,
+  INTRO_EXAM_LINKS,
+  SCALE_METRICS,
+  STUDENT_STORIES,
+  STUDY_RESOURCES,
+  WHY_CHOOSE,
 } from "../content";
 import { Section, Card, ButtonLink, FeatureIcon } from "./primitives";
-import { TrackedLink } from "./TrackedLink";
+import { Icon, GooglePlayBadge, type IconName } from "./Icon";
 import { VideoTestimonialButton } from "./VideoTestimonialButton";
 import { Marquee } from "./Marquee";
 import { SidePromoCarousel } from "./SidePromoCarousel";
@@ -17,8 +17,8 @@ import { SidePromoCarousel } from "./SidePromoCarousel";
 /**
  * HP-030 / HP-031 — Introduction. Two-column band: the pitch on the left, the
  * auto-rotating promo carousel (16:10, matched to the copy height) on the right.
- * The full metrics block lives in its own "Parikshe at scale" section, so here
- * we keep a single trust line under the actions.
+ * A single trust line sits under the actions (the standalone "Parikshe at scale"
+ * section was removed by the product owner, 2026-09-02).
  */
 export function IntroAndChips() {
   return (
@@ -42,12 +42,24 @@ export function IntroAndChips() {
           </h2>
           <p className="text-text-muted mt-5 max-w-xl text-base leading-relaxed sm:text-lg">
             Live classes, curated notes, previous-year papers and practice tests
-            in Kannada and English — for SSLC, PUC, KCET, NEET and CA
-            Foundation.
+            in Kannada and English. Pick your exam:
           </p>
 
-          <div className="mt-7 flex flex-wrap gap-3">
-            <ButtonLink href="#categories" variant="primary">
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {INTRO_EXAM_LINKS.map((e) => (
+              <li key={e.id}>
+                <a
+                  href={e.href}
+                  className="border-brand-gold-600/50 text-brand-gold-ink hover:bg-surface-accent inline-flex rounded-full border bg-white px-3.5 py-1.5 text-sm font-bold transition-colors"
+                >
+                  {e.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <ButtonLink href="#explore-courses" variant="primary">
               See all courses
             </ButtonLink>
             <ButtonLink href={APP_STORE.playStore} variant="secondary">
@@ -85,7 +97,7 @@ export function IntroAndChips() {
 
 /**
  * HP-040 — "the student's journey": each real problem, and how Parikshe
- * resolves it. Alternating zigzag rows with a large illustrative icon.
+ * resolves it. Compact icon-left cards (1 col mobile, 2 col desktop).
  */
 export function WhyChoose() {
   return (
@@ -96,33 +108,25 @@ export function WhyChoose() {
       intro="Exam prep throws up the same problems again and again. Here is how Parikshe handles each one."
       tone="muted"
     >
-      <ol className="flex flex-col gap-6 sm:gap-4">
-        {WHY_CHOOSE.map((item, i) => (
+      <ol className="grid gap-4 sm:gap-4 lg:grid-cols-2">
+        {WHY_CHOOSE.map((item) => (
           <li
             key={item.id}
-            className={`border-border bg-surface flex flex-col items-center gap-6 rounded-3xl border p-6 sm:gap-10 sm:p-8 ${
-              i % 2 === 1 ? "sm:flex-row-reverse" : "sm:flex-row"
-            }`}
+            className="border-border bg-surface flex gap-4 rounded-2xl border p-4 sm:gap-5 sm:p-6"
           >
-            {/* illustrative icon blob */}
-            <div className="relative shrink-0">
-              <span
-                aria-hidden="true"
-                className="bg-cta-bg/25 absolute -inset-3 rounded-full blur-xl"
-              />
-              <span className="bg-cta-bg text-cta-text relative grid h-24 w-24 place-items-center rounded-3xl sm:h-28 sm:w-28">
-                <FeatureIcon name={item.icon} className="h-11 w-11" />
-              </span>
-            </div>
+            {/* icon */}
+            <span className="bg-cta-bg text-cta-text grid h-11 w-11 shrink-0 place-items-center rounded-xl sm:h-14 sm:w-14">
+              <FeatureIcon name={item.icon} className="h-5 w-5 sm:h-7 sm:w-7" />
+            </span>
 
-            <div className="text-center sm:text-left">
-              <p className="inline-flex items-center gap-1.5 rounded-full bg-[#fdecec] px-3 py-1 text-xs font-semibold text-[#b3261e]">
+            <div>
+              <p className="inline-flex items-start gap-1.5 rounded-md bg-[#fdecec] px-2 py-0.5 text-[11px] font-semibold text-[#b3261e]">
                 <span aria-hidden="true">✕</span> {item.problem}
               </p>
-              <p className="text-text-primary mt-3 text-lg font-extrabold sm:text-xl">
+              <p className="text-text-primary mt-2 text-base font-extrabold sm:text-lg">
                 {item.title}
               </p>
-              <p className="text-text-muted mt-2 max-w-xl text-sm leading-relaxed sm:text-base">
+              <p className="text-text-muted mt-1 text-sm leading-relaxed">
                 {item.body}
               </p>
             </div>
@@ -133,109 +137,63 @@ export function WhyChoose() {
   );
 }
 
-/** HP-050 — Exam/Category Discovery: full cards (canonical browsing surface). */
-export function CategoryDiscovery() {
-  return (
-    <Section
-      id="categories"
-      eyebrow="Find your path"
-      title="Choose your exam or class"
-      intro="Every category links straight through to its courses and study plan."
-    >
-      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {CATEGORIES.map((c) => (
-          <Card
-            as="li"
-            key={c.id}
-            id={`category-${c.id}`}
-            className="flex flex-col gap-2"
-          >
-            <p className="text-text-primary text-lg font-bold">{c.label}</p>
-            <p className="text-text-muted flex-1 text-sm leading-relaxed">
-              {c.description}
-            </p>
-            <TrackedLink
-              href={c.href}
-              event={{
-                type: "homepage.category_selected.v1",
-                categoryId: c.id,
-                source: "card",
-              }}
-              className="text-brand-gold-ink mt-3 inline-flex w-fit items-center gap-1 text-sm font-bold hover:gap-2"
-            >
-              Explore now <span aria-hidden="true">&rarr;</span>
-            </TrackedLink>
-          </Card>
-        ))}
-      </ul>
-    </Section>
-  );
-}
+const APP_FEATURES: { icon: IconName; label: string }[] = [
+  { icon: "video", label: "Live classes" },
+  { icon: "play", label: "Recordings" },
+  { icon: "notes", label: "Notes & PYQs" },
+  { icon: "test", label: "Practice tests" },
+];
 
-/** HP-060 — Parikshe at Scale. Metrics Unverified (one footnote, not per-number). */
-export function ScaleStats() {
-  return (
-    <Section
-      id="scale"
-      eyebrow="Trusted by students"
-      title="Parikshe at scale"
-      tone="muted"
-    >
-      <ul className="grid gap-6 sm:grid-cols-4">
-        {SCALE_METRICS.map((m) => (
-          <li
-            key={m.id}
-            className="border-brand-gold-600/30 bg-surface rounded-2xl border p-6 text-center shadow-sm"
-          >
-            <p className="text-brand-gold-ink text-4xl font-extrabold sm:text-5xl">
-              {m.value}
-            </p>
-            <p className="text-text-primary mt-2 text-sm font-semibold">
-              {m.label}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </Section>
-  );
-}
-
-/** HP-070 — Parikshe App. */
+/** HP-070 — Parikshe App. Store badge + feature icons, minimal copy. */
 export function AppPromo() {
   return (
     <Section id="app" eyebrow="On the go" title="Learn on the Parikshe app">
-      <div className="grid items-center gap-12 sm:grid-cols-2">
-        <div className="mx-auto w-full max-w-70">
+      <div className="grid items-center gap-10 sm:grid-cols-2 sm:gap-12">
+        <div className="mx-auto w-full max-w-64">
           <Image
             src="/parikshe/app-mockup.png"
-            alt="The Parikshe app open on a phone showing the sign-in screen."
+            alt="The Parikshe app open on a phone."
             width={700}
             height={925}
             className="h-auto w-full drop-shadow-2xl"
           />
         </div>
-        <div className="flex flex-col gap-5">
-          <p className="text-text-muted text-lg">
-            Attend live classes, watch recordings, read notes and take tests —
-            all in one app.
-          </p>
-          <div className="flex items-center gap-3">
-            <span className="text-text-primary text-3xl font-extrabold">
+        <div className="flex flex-col gap-6">
+          <ul className="grid grid-cols-2 gap-3">
+            {APP_FEATURES.map((f) => (
+              <li
+                key={f.label}
+                className="border-border bg-surface flex items-center gap-2.5 rounded-xl border p-3"
+              >
+                <span className="bg-surface-accent text-brand-gold-ink grid h-9 w-9 shrink-0 place-items-center rounded-lg">
+                  <Icon name={f.icon} className="h-5 w-5" />
+                </span>
+                <span className="text-text-primary text-sm font-semibold">
+                  {f.label}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center gap-2">
+            <Icon name="star" className="text-brand-gold-600 h-5 w-5" />
+            <span className="text-text-primary text-lg font-extrabold">
               {APP_STORE.rating}
             </span>
             <span className="text-text-muted text-sm">
-              on Google Play
-              <br />
-              {APP_STORE.reviews} reviews
+              · {APP_STORE.reviews} reviews on Google Play
             </span>
           </div>
-          <ButtonLink
+
+          <a
             href={APP_STORE.playStore}
-            variant="primary"
-            className="w-fit"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download the Parikshe app on Google Play"
+            className="focus-visible:outline-brand-gold w-fit rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2"
           >
-            Get it on Google Play
-          </ButtonLink>
+            <GooglePlayBadge className="h-14" />
+          </a>
         </div>
       </div>
     </Section>
@@ -254,6 +212,9 @@ export function StudyResources() {
       <ul className="grid gap-6 sm:grid-cols-3">
         {STUDY_RESOURCES.map((r) => (
           <Card as="li" key={r.id} className="flex flex-col gap-3">
+            <span className="bg-cta-bg text-cta-text grid h-12 w-12 place-items-center rounded-xl">
+              <Icon name={r.icon} className="h-6 w-6" />
+            </span>
             <p className="text-text-primary text-lg font-bold">{r.title}</p>
             <p className="text-text-muted flex-1 text-sm leading-relaxed">
               {r.body}
@@ -284,7 +245,10 @@ export function FreeVsPaid() {
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Free column */}
         <div className="border-border bg-surface rounded-2xl border p-6 sm:p-8">
-          <h3 className="text-text-primary text-xl font-bold">
+          <span className="bg-surface-muted text-text-muted grid h-11 w-11 place-items-center rounded-xl">
+            <Icon name="youtube" className="h-6 w-6" />
+          </span>
+          <h3 className="text-text-primary mt-3 text-xl font-bold">
             Free YouTube content
           </h3>
           <p className="text-text-muted mt-1 text-sm">
@@ -300,7 +264,7 @@ export function FreeVsPaid() {
                   aria-hidden="true"
                   className="bg-surface-muted text-text-muted mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
                 >
-                  &ndash;
+                  <Icon name="minus" className="h-3 w-3" strokeWidth={2.5} />
                 </span>
                 <span>
                   <span className="text-text-primary font-semibold">
@@ -318,7 +282,10 @@ export function FreeVsPaid() {
           <span className="bg-cta-bg text-cta-text absolute -top-3 left-6 rounded-full px-3 py-1 text-xs font-bold">
             Recommended
           </span>
-          <h3 className="text-text-primary text-xl font-bold">
+          <span className="bg-cta-bg text-cta-text grid h-11 w-11 place-items-center rounded-xl">
+            <Icon name="sparkle" className="h-6 w-6" />
+          </span>
+          <h3 className="text-text-primary mt-3 text-xl font-bold">
             Paid Parikshe products
           </h3>
           <p className="text-text-muted mt-1 text-sm">
@@ -332,9 +299,9 @@ export function FreeVsPaid() {
               >
                 <span
                   aria-hidden="true"
-                  className="bg-cta-bg text-cta-text mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[11px] font-bold"
+                  className="bg-cta-bg text-cta-text mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full"
                 >
-                  &#10003;
+                  <Icon name="check" className="h-3 w-3" strokeWidth={3} />
                 </span>
                 <span>
                   <span className="text-text-primary font-semibold">
@@ -346,7 +313,7 @@ export function FreeVsPaid() {
             ))}
           </ul>
           <div className="mt-7">
-            <ButtonLink href="#categories" variant="primary">
+            <ButtonLink href="#explore-courses" variant="primary">
               Explore paid courses
             </ButtonLink>
           </div>

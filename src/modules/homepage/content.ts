@@ -98,23 +98,22 @@ export const CATEGORIES: readonly Category[] = [
 ] as const;
 
 /**
- * Compact set of headline buttons rendered inline in the intro sentence
- * (replaces the plain "SSLC, PUC, KCET, NEET & CA Foundation" text).
+ * Exam shortcuts shown as pill buttons under the intro paragraph. Each links
+ * straight to that exam's courses.
  */
-export const HERO_CATEGORY_LINKS: readonly {
+export const INTRO_EXAM_LINKS: readonly {
   id: string;
   label: string;
   href: string;
 }[] = [
-  { id: "sslc", label: "SSLC", href: `${PURCHASE}/sslc` },
-  { id: "pu-science", label: "PU Science", href: `${PURCHASE}/pu-science` },
-  { id: "pu-commerce", label: "PU Commerce", href: `${PURCHASE}/pu-commerce` },
+  { id: "sslc", label: "SSLC", href: `${STUDIO_CLASS}561581` },
+  { id: "puc", label: "PUC", href: `${PURCHASE}/pu-science` },
   { id: "kcet", label: "KCET", href: `${PURCHASE}/pu-science` },
   { id: "neet", label: "NEET", href: `${PURCHASE}/pu-science` },
   {
     id: "ca-foundation",
     label: "CA Foundation",
-    href: `${PURCHASE}/ca-foundation`,
+    href: `${STUDIO_CLASS}4125644`,
   },
 ] as const;
 
@@ -149,74 +148,12 @@ export const CLASSES: readonly ClassTile[] = [
 const STUDIO = "https://studio.parikshe.in/details";
 
 export interface CourseLink {
+  /** Full product name — used in the Courses nav mega-menu. */
   label: string;
+  /** Compact name — used in the width-constrained "Explore courses" row. */
+  short?: string;
   href: string;
 }
-
-export interface CourseClassGroup {
-  id: string;
-  label: string;
-  /** Products within this class, in menu order. */
-  products: readonly CourseLink[];
-}
-
-/**
- * HP-011 — the "Courses" nav mega-menu: find courses by class, then the
- * individual products inside each class. Product URLs are the
- * studio.parikshe.in detail pages supplied by the product owner (2026-09-02).
- */
-export const COURSE_CLASSES: readonly CourseClassGroup[] = [
-  {
-    id: "sslc",
-    label: "SSLC",
-    products: [
-      { label: "PARIKSHE PRATHAMA Core", href: `${STUDIO}?nid=3396397` },
-      { label: "PARIKSHE PRATHAMA Core Plus", href: `${STUDIO}?nid=3397261` },
-    ],
-  },
-  {
-    id: "pu1-science",
-    label: "PU 1 Science",
-    products: [
-      { label: "Aarambha KCET Integrated", href: `${STUDIO}?nid=3626753` },
-      { label: "Aarambha NEET Integrated", href: `${STUDIO}?nid=3626939` },
-    ],
-  },
-  {
-    id: "pu2-science",
-    label: "PU 2 Science",
-    products: [
-      { label: "Vijeta 360 KCET Integrated", href: `${STUDIO}?nid=4316473` },
-    ],
-  },
-  {
-    id: "pu1-commerce",
-    label: "PU 1 Commerce",
-    products: [
-      {
-        label: "Sankalpa Core – 1st PUC Commerce",
-        href: `${STUDIO}?nid=4571049`,
-      },
-    ],
-  },
-  {
-    id: "pu2-commerce",
-    label: "PU 2 Commerce",
-    products: [
-      {
-        label: "Sadhaka Pro – 2nd PUC Commerce",
-        href: `${STUDIO}?nid=3585596`,
-      },
-    ],
-  },
-  {
-    id: "ca-foundation",
-    label: "CA Foundation",
-    products: [
-      { label: "CA Foundation Nischaya", href: `${STUDIO}?nid=4131156` },
-    ],
-  },
-] as const;
 
 /**
  * HP-012 — "Find popular books": guide books shown both inside the Courses
@@ -246,9 +183,11 @@ export interface ClassCourseGroup {
 }
 
 /**
- * HP-013 — "Explore courses by class" section: one card per class with a pill
- * per product. Product URLs are `studio.parikshe.in/details?nid=<nid>`
- * (product-owner list, 2026-09-02).
+ * HP-011 / HP-013 — single source for both the "Courses" nav mega-menu and the
+ * "Explore courses by class" section. `label` is the full product name (menu);
+ * `short` is the compact name for the width-constrained Explore row. Product
+ * URLs are `studio.parikshe.in/details?nid=<nid>` (product-owner list,
+ * 2026-09-02).
  */
 export const CLASS_COURSES: readonly ClassCourseGroup[] = [
   {
@@ -258,10 +197,10 @@ export const CLASS_COURSES: readonly ClassCourseGroup[] = [
     tint: "violet",
     exploreHref: `${STUDIO_CLASS}561581`,
     courses: [
-      { label: "PRATHAMA Core", href: `${STUDIO}?nid=3396397` },
-      { label: "PRATHAMA Core Plus", href: `${STUDIO}?nid=3397261` },
-      { label: "Power Guide – English", href: `${STUDIO}?nid=4785371` },
-      { label: "Power Guide – Kannada", href: `${STUDIO}?nid=4785406` },
+      { label: "PARIKSHE PRATHAMA Core", short: "PRATHAMA Core", href: `${STUDIO}?nid=3396397` }, // prettier-ignore
+      { label: "PARIKSHE PRATHAMA Core Plus", short: "PRATHAMA Core Plus", href: `${STUDIO}?nid=3397261` }, // prettier-ignore
+      { label: "SSLC Power Guide Combo – English Medium", short: "Power Guide – English", href: `${STUDIO}?nid=4785371&origin=parikshe.in` }, // prettier-ignore
+      { label: "SSLC Power Guide Combo – Kannada Medium", short: "Power Guide – Kannada", href: `${STUDIO}?nid=4785406&origin=parikshe.in` }, // prettier-ignore
     ],
   },
   {
@@ -271,10 +210,10 @@ export const CLASS_COURSES: readonly ClassCourseGroup[] = [
     tint: "amber",
     exploreHref: `${STUDIO_CLASS}1311098`,
     courses: [
-      { label: "Aarambha KCET – 1 Yr", href: `${STUDIO}?nid=3626753` },
-      { label: "Aarambha KCET – 2 Yr", href: `${STUDIO}?nid=3963882` },
-      { label: "Aarambha NEET – 1 Yr", href: `${STUDIO}?nid=3626939` },
-      { label: "Aarambha NEET – 2 Yr", href: `${STUDIO}?nid=3963910` },
+      { label: "Aarambha KCET Integrated – 1 Year Plan", short: "Aarambha KCET – 1 Yr", href: `${STUDIO}?nid=3626753` }, // prettier-ignore
+      { label: "Aarambha KCET Integrated – 2 Year Plan", short: "Aarambha KCET – 2 Yr", href: `${STUDIO}?nid=3963882` }, // prettier-ignore
+      { label: "Aarambha NEET Integrated – 1 Year Plan", short: "Aarambha NEET – 1 Yr", href: `${STUDIO}?nid=3626939` }, // prettier-ignore
+      { label: "Aarambha NEET Integrated – 2 Year Plan", short: "Aarambha NEET – 2 Yr", href: `${STUDIO}?nid=3963910` }, // prettier-ignore
     ],
   },
   {
@@ -284,9 +223,9 @@ export const CLASS_COURSES: readonly ClassCourseGroup[] = [
     tint: "emerald",
     exploreHref: `${STUDIO_CLASS}1311099`,
     courses: [
-      { label: "Vijeta 360 KCET", href: `${STUDIO}?nid=4316473` },
-      { label: "Vijeta 360 – Pro", href: `${STUDIO}?nid=4317487` },
-      { label: "Vijeta 360 – NEET Plus", href: `${STUDIO}?nid=4317634` },
+      { label: "Vijeta 360 KCET Integrated", short: "Vijeta 360 KCET", href: `${STUDIO}?nid=4316473` }, // prettier-ignore
+      { label: "Vijeta 360 KCET Integrated – Pro", short: "Vijeta 360 – Pro", href: `${STUDIO}?nid=4317487` }, // prettier-ignore
+      { label: "Vijeta 360 KCET Integrated – NEET Plus", short: "Vijeta 360 – NEET Plus", href: `${STUDIO}?nid=4317634` }, // prettier-ignore
     ],
   },
   {
@@ -296,8 +235,8 @@ export const CLASS_COURSES: readonly ClassCourseGroup[] = [
     tint: "pink",
     exploreHref: `${STUDIO_CLASS}1311101`,
     courses: [
-      { label: "Sankalpa Core", href: `${STUDIO}?nid=4571049` },
-      { label: "Sankalpa Core Plus", href: `${STUDIO}?nid=4571068` },
+      { label: "Sankalpa Core – 1st PUC Commerce", short: "Sankalpa Core", href: `${STUDIO}?nid=4571049` }, // prettier-ignore
+      { label: "Sankalpa Core Plus – 1st PUC Commerce", short: "Sankalpa Core Plus", href: `${STUDIO}?nid=4571068` }, // prettier-ignore
     ],
   },
   {
@@ -307,8 +246,8 @@ export const CLASS_COURSES: readonly ClassCourseGroup[] = [
     tint: "orange",
     exploreHref: `${STUDIO_CLASS}1311102`,
     courses: [
-      { label: "Sadhaka Pro", href: `${STUDIO}?nid=3585596` },
-      { label: "Sadhaka Pro Plus", href: `${STUDIO}?nid=4221121` },
+      { label: "Sadhaka Pro – 2nd PUC Commerce", short: "Sadhaka Pro", href: `${STUDIO}?nid=3585596` }, // prettier-ignore
+      { label: "Sadhaka Pro Plus – 2nd PUC Commerce", short: "Sadhaka Pro Plus", href: `${STUDIO}?nid=4221121` }, // prettier-ignore
     ],
   },
   {
@@ -318,9 +257,8 @@ export const CLASS_COURSES: readonly ClassCourseGroup[] = [
     tint: "sky",
     exploreHref: `${STUDIO_CLASS}4125644`,
     courses: [
-      { label: "Nischaya – Sep'26", href: `${STUDIO}?nid=4131028` },
-      { label: "Nischaya Pro", href: `${STUDIO}?nid=4131156` },
-      { label: "Nischaya Pro Plus", href: `${STUDIO}?nid=4131167` },
+      { label: "Nischaya Pro – Sep'26 & Jan'27", short: "Nischaya Pro", href: `${STUDIO}?nid=4131156` }, // prettier-ignore
+      { label: "Nischaya Pro Plus – Sep'26 & Jan'27", short: "Nischaya Pro Plus", href: `${STUDIO}?nid=4131167` }, // prettier-ignore
     ],
   },
 ] as const;
@@ -343,15 +281,13 @@ export interface HeroBanner {
   /** HP-401..HP-406 banner types. */
   type: "product" | "offering" | "app" | "student" | "free_vs_paid" | "festive";
   /**
-   * Path to the supplied creative under `/public/banners/`. If the file is not
-   * present the carousel renders a branded fallback card from the text fields
-   * below (fail-safe, HP-020). Drop the real files in with these exact names.
+   * Desktop creative (8:3, ≈2400×900) in `public/banners/hero/`. If the file is
+   * missing the carousel shows a branded fallback (fail-safe, HP-020).
    */
   image: string;
   /**
-   * Optional mobile crop (`<640px`) under `/public/banners/`. Desktop container
-   * is 8:3 (≈2400×900), mobile is 16:10 (≈1200×750). If omitted, `image` is
-   * used at both sizes with `object-cover`.
+   * Mobile crop (`<640px`, 16:10, ≈1200×750) in `public/banners/hero/`. If
+   * omitted, `image` is used at both sizes with `object-cover`.
    */
   imageMobile?: string;
   /** Accessible description of the creative (HP-020 alt-text requirement). */
@@ -376,8 +312,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "puc-kcet",
     type: "product",
-    image: "/banners/aarambha-kcet.png",
-    imageMobile: "/banners/aarambha-kcet-mobile.png",
+    image: "/banners/hero/aarambha-kcet.png",
+    imageMobile: "/banners/hero/aarambha-kcet-mobile.png",
     alt: "1st PUC Aarambha — KCET Integrated 2026-27. Crack KCET with expert guidance. 200+ daily live classes, 50+ practice tests, PYQ solutions. ₹3,499.",
     headline: "1st PUC Aarambha — KCET Integrated 2026–27",
     supportingText:
@@ -388,8 +324,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "puc-neet",
     type: "product",
-    image: "/banners/aarambha-neet.png",
-    imageMobile: "/banners/aarambha-neet-mobile.png",
+    image: "/banners/hero/aarambha-neet.png",
+    imageMobile: "/banners/hero/aarambha-neet-mobile.png",
     alt: "1st PUC Aarambha — NEET Integrated 2026-27. Crack NEET with expert guidance. ₹4,499.",
     headline: "1st PUC Aarambha — NEET Integrated 2026–27",
     supportingText:
@@ -400,8 +336,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "ca-foundation-nischaya",
     type: "product",
-    image: "/banners/nischaya-2-tires.png",
-    imageMobile: "/banners/nischaya-2-tires-mobile.png",
+    image: "/banners/hero/nischaya-2-tires.png",
+    imageMobile: "/banners/hero/nischaya-2-tires-mobile.png",
     alt: "CA Foundation Nischaya. Nischaya Pro ₹5,999, Nischaya Pro+ ₹8,999. January attempt.",
     headline: "CA Foundation Nischaya",
     supportingText:
@@ -412,8 +348,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "prathama-core-plus",
     type: "product",
-    image: "/banners/prathama-plus.png",
-    imageMobile: "/banners/prathama-plus-mobile.png",
+    image: "/banners/hero/prathama-plus.png",
+    imageMobile: "/banners/hero/prathama-plus-mobile.png",
     alt: "Parikshe Prathama Core Plus for SSLC batch of 2027. Maths, Science, Social Science, English and Kannada (1st & 2nd language). ₹2,499 for the full year.",
     headline: "Parikshe Prathama Core Plus — SSLC 2027",
     supportingText:
@@ -424,8 +360,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "prathama-core",
     type: "product",
-    image: "/banners/prathama.png",
-    imageMobile: "/banners/prathama-mobile.png",
+    image: "/banners/hero/prathama.png",
+    imageMobile: "/banners/hero/prathama-mobile.png",
     alt: "Parikshe Prathama Core for SSLC batch of 2027. Maths, Science, Social Science. ₹2,199 for the full year.",
     headline: "Parikshe Prathama Core — SSLC 2027",
     supportingText:
@@ -436,8 +372,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "sadhaka-pro-commerce",
     type: "product",
-    image: "/banners/sadhaka.png",
-    imageMobile: "/banners/sadhaka-mobile.png",
+    image: "/banners/hero/sadhaka.png",
+    imageMobile: "/banners/hero/sadhaka-mobile.png",
     alt: "Sadhaka Pro — 2nd PUC Commerce 2026-27. Trusted by 30,000+ students. Live classes and recordings, solved question bank, practice tests. ₹3,499.",
     headline: "Sadhaka Pro — 2nd PUC Commerce 2026–27",
     supportingText:
@@ -448,8 +384,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "sankalpa-core-commerce",
     type: "product",
-    image: "/banners/sankalpa-core.png",
-    imageMobile: "/banners/sankalpa-core-mobile.png",
+    image: "/banners/hero/sankalpa-core.png",
+    imageMobile: "/banners/hero/sankalpa-core-mobile.png",
     alt: "Sankalpa Core — 1st PUC Commerce 2026-2027. Solved question bank, PYQs with solutions, mind maps, sample question paper.",
     headline: "Sankalpa Core — 1st PUC Commerce 2026–27",
     supportingText:
@@ -460,8 +396,8 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
   {
     id: "vijeta-360",
     type: "product",
-    image: "/banners/vijeta.png",
-    imageMobile: "/banners/vijeta-mobile.png",
+    image: "/banners/hero/vijeta.png",
+    imageMobile: "/banners/hero/vijeta-mobile.png",
     alt: "2nd PUC Vijeta 360 — KCET Integrated. 06 April 2026 to 31 December 2026. Daily lives, practice tests, PYQ solutions. ₹3,999.",
     headline: "2nd PUC Vijeta 360 — KCET Integrated",
     supportingText:
@@ -474,13 +410,53 @@ export const HERO_BANNERS: readonly HeroBanner[] = [
 /**
  * HP-140 / HP-326 — promotional popup. Product-owner decision (2026-09-02):
  * the popup shows the creative ONLY (no headline / body / button); the image
- * itself is the click target. Drop the file at `public/promo/` with this name.
+ * itself is the click target. Creative lives in `public/banners/popup/`.
  */
 export const PROMO_POPUP = {
-  image: "/promo/sslc-power-guides.png",
+  image: "/banners/popup/sslc-power-guides.png",
   alt: "Parikshe SSLC Power Guides — Mathematics, Science and Social Science. Your all-in-one Karnataka SSLC exam prep.",
   href: "https://studio.parikshe.in/details?nid=4785371&origin=parikshe.in",
 } as const;
+
+export interface IntroBanner {
+  id: string;
+  /** 16:10 creative (~1200×750) in `public/banners/intro/`. */
+  image: string;
+  alt: string;
+  href: string;
+}
+
+/**
+ * Auto-rotating promo carousel in the "Learn · Prepare · Achieve" intro section.
+ * Its own creative set (separate from the hero) — drop files in
+ * `public/banners/intro/`, one row here. Missing file → branded fallback.
+ */
+export const INTRO_BANNERS: readonly IntroBanner[] = [
+  {
+    id: "slide-1",
+    image: "/banners/intro/slide-1.png",
+    alt: "1st PUC Aarambha — KCET Integrated 2026–27.",
+    href: `${STUDIO}?nid=3626753`,
+  },
+  {
+    id: "slide-2",
+    image: "/banners/intro/slide-2.png",
+    alt: "Sadhaka Pro — 2nd PUC Commerce.",
+    href: `${STUDIO}?nid=3585596`,
+  },
+  {
+    id: "slide-3",
+    image: "/banners/intro/slide-3.png",
+    alt: "Vijeta 360 — 2nd PUC KCET Integrated.",
+    href: `${STUDIO}?nid=4316473`,
+  },
+  {
+    id: "slide-4",
+    image: "/banners/intro/slide-4.png",
+    alt: "Parikshe Prathama Core Plus — SSLC.",
+    href: `${STUDIO}?nid=3397261`,
+  },
+] as const;
 
 export interface Metric {
   id: string;
@@ -610,8 +586,11 @@ export const FREE_VS_PAID: readonly ComparisonRow[] = [
   },
 ] as const;
 
+export type StudyResourceIcon = "book" | "youtube" | "sparkle";
+
 export interface StudyResource {
   id: string;
+  icon: StudyResourceIcon;
   title: string;
   body: string;
   ctaLabel: string;
@@ -622,24 +601,27 @@ export interface StudyResource {
 export const STUDY_RESOURCES: readonly StudyResource[] = [
   {
     id: "guidebook",
+    icon: "book",
     title: "Guidebooks",
-    body: "Chapter-wise printed guides mapped to the Karnataka syllabus, with solved examples and practice questions.",
+    body: "Chapter-wise printed guides mapped to the Karnataka syllabus, with solved examples.",
     ctaLabel: "View guidebooks",
     ctaHref: "#",
   },
   {
     id: "youtube",
+    icon: "youtube",
     title: "Free YouTube lessons",
-    body: "Thousands of free topic lessons on the Parikshe YouTube channel — a great way to start.",
+    body: "Thousands of free topic lessons on the Parikshe YouTube channel.",
     ctaLabel: "Watch on YouTube",
     ctaHref: "https://www.youtube.com/@SSLCPARIKSHE",
   },
   {
     id: "paid",
+    icon: "sparkle",
     title: "Paid learning products",
-    body: "Structured courses with daily live classes, integrated tests, doubt support and mentor guidance.",
+    body: "Structured courses with live classes, tests, doubt support and mentor guidance.",
     ctaLabel: "Explore courses",
-    ctaHref: "#categories",
+    ctaHref: "#explore-courses",
   },
 ] as const;
 

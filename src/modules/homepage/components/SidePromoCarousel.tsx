@@ -4,18 +4,18 @@
    loaded with an onError fallback. */
 
 import { useEffect, useRef, useState } from "react";
-import { HERO_BANNERS } from "../content";
+import { INTRO_BANNERS } from "../content";
 import { asset } from "../asset";
 import { emitHomepageEvent } from "../analytics";
 
 const ROTATE_MS = 4000;
-const SLIDES = HERO_BANNERS.slice(0, 5);
+const SLIDES = INTRO_BANNERS;
 
 /**
- * Auto-rotating promo carousel for the intro section. Uses the 16:10 mobile crop
- * of each hero banner (a good fit for this near-square card — no crop, no
- * letterbox). Crossfades one banner at a time; pauses on hover/focus/hidden tab;
- * off under prefers-reduced-motion. Whole card is the click target.
+ * Auto-rotating promo carousel for the intro section — its own 16:10 creative
+ * set (`INTRO_BANNERS`, `public/banners/intro/`). Crossfades one at a time;
+ * pauses on hover/focus/hidden tab; off under prefers-reduced-motion. Whole
+ * card is the click target.
  */
 export function SidePromoCarousel({ className = "" }: { className?: string }) {
   const [i, setI] = useState(0);
@@ -89,8 +89,8 @@ function Slide({
 
   return (
     <a
-      href={banner.ctaHref}
-      aria-label={`${banner.headline} — ${banner.ctaLabel}`}
+      href={banner.href}
+      aria-label={banner.alt}
       aria-hidden={!active}
       tabIndex={active ? 0 : -1}
       onClick={() =>
@@ -108,7 +108,7 @@ function Slide({
       ) : null}
       <img
         ref={imgRef}
-        src={asset(banner.imageMobile ?? banner.image)}
+        src={asset(banner.image)}
         alt={banner.alt}
         width={1200}
         height={750}

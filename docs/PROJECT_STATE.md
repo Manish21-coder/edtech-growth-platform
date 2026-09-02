@@ -5,15 +5,18 @@ memory for anything here._
 
 Last updated: 2026-09-01
 
-## Live
+## Live / deploy
 
-- **Site:** <https://manish21-coder.github.io/edtech-growth-platform/>
-- **Repo:** <https://github.com/Manish21-coder/edtech-growth-platform>
-- **Deploy:** static export (`output: "export"`) → GitHub Pages via
-  `.github/workflows/deploy.yml` on every push to `main`
-  (`NEXT_PUBLIC_BASE_PATH=/edtech-growth-platform`; `asset()` prefixes raw
-  `<img>` paths). This is a **preview host** for review/sharing — not the
-  production target (that decision is deferred; Vercel/own domain later).
+- **Repo:** <https://github.com/Manish21-coder/edtech-growth-platform> — set
+  **private** by the product owner (2026-09-02).
+- **GitHub Pages is currently disabled**: Pages on a **private** repo needs
+  GitHub Pro/Team. The `.github/workflows/deploy.yml` (static export →
+  `NEXT_PUBLIC_BASE_PATH=/edtech-growth-platform`, `asset()` prefixes raw
+  `<img>`) is ready and worked while the repo was public.
+- **To get a shareable link, pick one:** (a) make the repo public again — Pages
+  redeploys automatically; (b) connect the repo to Vercel/Netlify/Cloudflare
+  Pages (free, works with private repos, ~2 min, needs the owner to sign in);
+  (c) GitHub Pro. Production target is still deferred.
 
 ## Current block
 
@@ -106,14 +109,14 @@ optional for `<640px` (undefined for now → desktop image used everywhere).
 Auto-advances (5s, pauses on hover/focus/hidden tab, off under reduced-motion),
 whole banner clickable (no text overlaid), pagination dots overlaid slim near
 the bottom, hover arrows. The **product owner supplied both crops per banner** —
-`public/banners/<name>.png` (desktop 8:3, 2400×900) + `<name>-mobile.png`
+`public/banners/hero/<name>.png` (desktop 8:3, 2400×900) + `<name>-mobile.png`
 (mobile 16:10, 1200×750); `Slide` uses a `<picture>` (desktop above 640px,
 mobile below) and checks `img.complete` on mount. Filenames + nids in the
-`public/banners/README.md` table and `HERO_BANNERS` (`image` + `imageMobile`).
+`public/banners/README.md` (folder per section) and `HERO_BANNERS` (`image` + `imageMobile`).
 Banner click-throughs → `studio.parikshe.in/details?nid=…`. The promo popup
 shows the **image only** + a Close control, click-through
 `…/details?nid=4785371&origin=parikshe.in` (`PROMO_POPUP`, image at
-`public/promo/sslc-power-guides.png`).
+`public/banners/popup/`).
 
 **Intro section rework (2026-09-02):** `IntroAndChips` is a custom two-column
 band (eyebrow + title + copy + a gold/secondary action pair + one trust line on
@@ -123,12 +126,39 @@ was removed (the full set lives in the "Parikshe at scale" section).
 `object-cover` in a 16:10 card — a clean fit (no crop, no letterbox) that sits
 level with the copy. Gold glow border kept.
 
-**Explore courses section (`ExploreCourses.tsx`, 2026-09-02):** new section
-right below the hero/callback strip — one card per class (SSLC, PU 1/2 Science,
-PU 1/2 Commerce, CA Foundation) with a coloured pill per product linking to
-`studio.parikshe.in/details?nid=<nid>` and an "Explore courses" button to the
-class listing. Data + nids in `CLASS_COURSES` (`content.ts`, product-owner list
-2026-09-02).
+**Explore courses section (`ExploreCourses.tsx`, 2026-09-02):** a single
+horizontal-scroll row of class cards, each with a coloured pill per product and
+an "Explore courses" button. **`CLASS_COURSES` (`content.ts`) is now the single
+source** for both this section and the "Courses" nav mega-menu — all 17
+products with `label` (full name, used in the menu) + `short` (compact name,
+used in this width-constrained row) + `studio.parikshe.in/details?nid=<nid>`.
+The old `COURSE_CLASSES` array was removed. The callback form's exam dropdown
+excludes KCET/NEET (product-owner, 2026-09-02). The standalone "Parikshe at
+scale" section was removed. "Why Parikshe" cards are now compact icon-left
+(1 col mobile / 2 col desktop).
+
+**Banner folders (2026-09-02):** `public/banners/` is now **one folder per
+section** — `hero/` (`HERO_BANNERS`, 8 desktop + 8 mobile crops) and `popup/`
+(`PROMO_POPUP`). Top-level `README.md` documents the layout and notes it maps
+1:1 to the future admin "Banners" config. CA Foundation dropdown/Explore pills
+dropped "Nischaya – Sep'26" (kept Pro + Pro Plus).
+
+**Icon pass (2026-09-02):** new reusable `Icon.tsx` — 15 line icons + a
+`GooglePlayBadge` SVG (recreation of the store mark). Applied to cut text
+density: the app section shows 4 feature chips with icons + a star rating + the
+Google Play badge; "Study resources" cards get an icon tile + shorter copy;
+Free-vs-Paid gets a column icon (YouTube / sparkle) and check/minus line icons
+instead of text glyphs; the footer contact list is now icon-per-method
+(mail / phone / WhatsApp / Instagram / YouTube).
+
+**Section trims (2026-09-02):** the "Choose your exam or class"
+(`CategoryDiscovery`, `#categories`) section was removed — every
+`#categories` link (intro "See all courses", Free-vs-Paid CTA, study-resources
+CTA) now points to **`#explore-courses`**. The intro paragraph's exam list
+(SSLC · PUC · KCET · NEET · CA Foundation) is now a row of gold pill links
+(`INTRO_EXAM_LINKS`, each → its courses; `HERO_CATEGORY_LINKS` renamed). A
+**"Download app"** item (→ `APP_STORE.playStore`) was added to the header
+(desktop nav + mobile drawer). `CATEGORIES` stays (used by the lead form only).
 
 A white **"Our Classes"** card (`ClassesStrip.tsx`) sits just below the hero
 with **6 class tiles** (SSLC, PU 1/2 Science, PU 1/2 Commerce, CA Foundation —
@@ -246,7 +276,7 @@ npm run dev           # dev server on http://localhost:3000
 
 ## Next recommended action
 
-Product owner to: (1) drop the 8 hero banner image files into `public/banners/`
+Product owner to: (1) drop the 8 hero banner image files into `public/banners/hero/`
 per its README; (2) confirm brand assets — exact colour hex, logo SVG, typeface
 (HP-601); (3) supply the WhatsApp destination (HP-203) and the remaining
 pending content in `docs/requirements/HOMEPAGE_REQUIREMENTS.md` "Open items";

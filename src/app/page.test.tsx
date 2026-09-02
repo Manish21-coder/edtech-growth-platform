@@ -9,11 +9,16 @@ describe("Homepage route", () => {
     expect(h1s).toHaveLength(1);
   });
 
-  it("renders the canonical exam categories once as discovery cards", () => {
+  it("renders the 'Explore courses by class' section with a card per class", () => {
     render(<Page />);
-    // "NEET" appears as a chip and as a discovery card — at least one card link.
-    const exploreLinks = screen.getAllByRole("link", { name: /explore now/i });
-    expect(exploreLinks.length).toBeGreaterThanOrEqual(8);
+    expect(
+      screen.getByRole("heading", { name: /explore courses by class/i }),
+    ).toBeInTheDocument();
+    // One "Explore courses" button per class card (6 classes).
+    const exploreLinks = screen.getAllByRole("link", {
+      name: /explore courses/i,
+    });
+    expect(exploreLinks.length).toBeGreaterThanOrEqual(6);
   });
 
   it("shows the Free-vs-Paid comparison exactly once (two columns)", () => {
@@ -36,7 +41,7 @@ describe("Homepage route", () => {
     // The PDF's unverified alternative must not appear.
     expect(screen.queryByText(/9686390808/)).toBeNull();
     // WhatsApp links to wa.me on the same approved number.
-    const wa = screen.getByRole("link", { name: /chat with us/i });
+    const wa = screen.getByRole("link", { name: /chat on whatsapp/i });
     expect(wa).toHaveAttribute("href", "https://wa.me/916366548224");
   });
 });

@@ -76,7 +76,7 @@ export function ExploreCourses() {
                       href={c.href}
                       className={`bg-surface inline-flex rounded-full border px-2.5 py-1 text-[11px] font-semibold transition-colors ${t.pill}`}
                     >
-                      {c.label}
+                      {c.short ?? c.label}
                     </a>
                   </li>
                 ))}

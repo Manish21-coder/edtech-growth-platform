@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CONTACT, NAV_LINKS } from "../content";
 import { Section, PendingTag } from "./primitives";
+import { Icon } from "./Icon";
 import { LeadCaptureCta } from "./LeadCaptureCta";
 
 /**
@@ -16,23 +17,27 @@ export function SiteFooter() {
     <>
       <Section id="contact" eyebrow="Get in touch" title="Contact us">
         <div className="grid gap-8 sm:grid-cols-2">
-          <ul className="flex flex-col gap-3 text-sm">
+          <ul className="flex flex-col gap-2.5 text-sm">
             <li>
-              <span className="text-text-primary font-semibold">Email </span>
               <a
                 href={`mailto:${CONTACT.email}`}
-                className="text-brand-gold-ink underline underline-offset-2"
+                className="text-text-primary hover:text-brand-gold-ink inline-flex items-center gap-2.5 font-medium"
               >
+                <span className="bg-surface-accent text-brand-gold-ink grid h-9 w-9 shrink-0 place-items-center rounded-lg">
+                  <Icon name="mail" className="h-4 w-4" />
+                </span>
                 {CONTACT.email}
               </a>
             </li>
             <li>
-              <span className="text-text-primary font-semibold">Phone </span>
               {CONTACT.phone ? (
                 <a
                   href={`tel:${CONTACT.phone}`}
-                  className="text-brand-gold-ink underline underline-offset-2"
+                  className="text-text-primary hover:text-brand-gold-ink inline-flex items-center gap-2.5 font-medium"
                 >
+                  <span className="bg-surface-accent text-brand-gold-ink grid h-9 w-9 shrink-0 place-items-center rounded-lg">
+                    <Icon name="phone" className="h-4 w-4" />
+                  </span>
                   {CONTACT.phone}
                 </a>
               ) : (
@@ -41,36 +46,37 @@ export function SiteFooter() {
             </li>
             {CONTACT.whatsapp ? (
               <li>
-                <span className="text-text-primary font-semibold">
-                  WhatsApp{" "}
-                </span>
                 <a
                   href={CONTACT.whatsapp}
                   rel="noopener noreferrer"
-                  className="text-brand-gold-ink underline underline-offset-2"
+                  className="text-text-primary hover:text-brand-gold-ink inline-flex items-center gap-2.5 font-medium"
                 >
-                  Chat with us
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-emerald-100 text-emerald-700">
+                    <Icon name="whatsapp" className="h-4 w-4" />
+                  </span>
+                  Chat on WhatsApp
                 </a>
               </li>
             ) : null}
-            <li className="flex flex-wrap gap-x-4 pt-1">
-              <span className="text-text-primary font-semibold">Follow</span>
+            <li className="flex items-center gap-3 pt-1">
               {instagram ? (
                 <a
                   href={instagram}
                   rel="noopener noreferrer"
-                  className="text-brand-gold-ink underline underline-offset-2"
+                  aria-label="Parikshe on Instagram"
+                  className="border-border text-text-primary hover:bg-surface-muted grid h-9 w-9 place-items-center rounded-lg border"
                 >
-                  Instagram
+                  <Icon name="instagram" className="h-4 w-4" />
                 </a>
               ) : null}
               {youtube ? (
                 <a
                   href={youtube}
                   rel="noopener noreferrer"
-                  className="text-brand-gold-ink underline underline-offset-2"
+                  aria-label="Parikshe on YouTube"
+                  className="border-border text-text-primary hover:bg-surface-muted grid h-9 w-9 place-items-center rounded-lg border"
                 >
-                  YouTube
+                  <Icon name="youtube" className="h-4 w-4" />
                 </a>
               ) : null}
             </li>

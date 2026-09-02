@@ -12,9 +12,9 @@ test("homepage responds with server-rendered content and one h1", async ({
   expect(response?.status()).toBe(200);
   // One h1 for SEO/a11y (visually hidden — the hero is banners only).
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
-  // Server-rendered category discovery (SEO-critical, HP-050).
+  // Server-rendered course discovery (SEO-critical, HP-013).
   await expect(
-    page.getByRole("link", { name: /explore now/i }).first(),
+    page.getByRole("link", { name: /explore courses/i }).first(),
   ).toBeVisible();
   // The Free-vs-Paid comparison appears exactly once (HP-091, two columns).
   await expect(page.getByText("Recommended")).toHaveCount(1);

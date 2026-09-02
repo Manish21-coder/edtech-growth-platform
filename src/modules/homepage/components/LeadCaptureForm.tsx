@@ -219,11 +219,13 @@ export function LeadCaptureForm({ onSuccess }: { onSuccess?: () => void }) {
           <option value="" disabled>
             Choose one
           </option>
-          {CATEGORIES.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.label}
-            </option>
-          ))}
+          {CATEGORIES.filter((c) => c.id !== "kcet" && c.id !== "neet").map(
+            (c) => (
+              <option key={c.id} value={c.id}>
+                {c.label}
+              </option>
+            ),
+          )}
         </select>
         {errors.category ? (
           <p id={`${formId}-category-error`} className="text-danger text-xs">

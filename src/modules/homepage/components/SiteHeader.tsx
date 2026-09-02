@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import {
+  APP_STORE,
+  CLASS_COURSES,
   CONTACT,
-  COURSE_CLASSES,
   GUIDE_BOOKS,
   type CourseLink,
 } from "../content";
@@ -106,7 +107,7 @@ function ClassAccordion({
 }) {
   return (
     <div>
-      {COURSE_CLASSES.map((c) => {
+      {CLASS_COURSES.map((c) => {
         const expanded = activeClass === c.id;
         return (
           <div
@@ -138,7 +139,7 @@ function ClassAccordion({
               </svg>
             </button>
             <ul hidden={!expanded} className="mb-2 ml-1 flex flex-col gap-0.5">
-              {c.products.map((p) => (
+              {c.courses.map((p) => (
                 <li key={p.href}>
                   <a
                     href={p.href}
@@ -176,7 +177,7 @@ export function SiteHeader() {
   const [menu, setMenu] = useState<OpenMenu>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeClass, setActiveClass] = useState<string>(
-    COURSE_CLASSES[0]?.id ?? "",
+    CLASS_COURSES[0]?.id ?? "",
   );
   const headerRef = useRef<HTMLElement>(null);
 
@@ -330,6 +331,33 @@ export function SiteHeader() {
             </div>
           </div>
 
+          <a
+            href={APP_STORE.playStore}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() =>
+              emitHomepageEvent({
+                type: "cta.clicked.v1",
+                ctaId: "navbar-download-app",
+              })
+            }
+            className="text-text-muted hover:text-text-primary inline-flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="h-4 w-4"
+            >
+              <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+            </svg>
+            Download app
+          </a>
+
           <div className="ml-2 flex items-center gap-2.5">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-700">
               <PhoneIcon />
@@ -421,6 +449,33 @@ export function SiteHeader() {
           </div>
 
           <div className="border-border mt-4 flex flex-col gap-3 border-t pt-4">
+            <a
+              href={APP_STORE.playStore}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                emitHomepageEvent({
+                  type: "cta.clicked.v1",
+                  ctaId: "navbar-download-app",
+                });
+                setMobileOpen(false);
+              }}
+              className="border-border-strong text-text-primary hover:bg-surface-muted inline-flex items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-sm font-bold"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="h-4 w-4"
+              >
+                <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
+              </svg>
+              Download app
+            </a>
             <LeadCaptureCta
               label="Talk to our expert"
               entryPoint="navbar-mobile"

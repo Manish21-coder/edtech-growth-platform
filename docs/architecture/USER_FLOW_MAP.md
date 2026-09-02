@@ -89,7 +89,7 @@ flowchart TD
   popupElig -- yes --> popup["Promo popup shown<br/>(homepage.popup_viewed)"]
   popup -- dismiss --> popupDismiss["Dismissed<br/>(homepage.popup_dismissed, 24h suppression)"]
   popup -- click --> popupClick["homepage.popup_clicked<br/>(not a completed conversion — HP-324)"]
-  discover --> scale["Parikshe at Scale"] --> results["Category-wise Results"] --> stories["Student Stories / Testimonials"]
+  discover --> results["Category-wise Results"] --> stories["Student Stories / Testimonials"]
   stories --> faq["FAQ"]
   faq --> leadEntry{"Lead-capture entry point<br/>(HP-410/411/412)"}
   leadEntry --> form["Shared lead form<br/>(default/focused/error/submitting/success/failure/duplicate/consent states)"]
@@ -97,7 +97,7 @@ flowchart TD
   form -- error --> formErr["Inline error + retry<br/>(input preserved)"] --> form
 
   classDef proposed stroke-dasharray:4 3,fill:#fff;
-  class start,hero,intro,chipClick,why,discover,explore,popupElig,popup,popupDismiss,popupClick,scale,results,stories,faq,leadEntry,form,submitOk,formErr proposed;
+  class start,hero,intro,chipClick,why,discover,explore,popupElig,popup,popupDismiss,popupClick,results,stories,faq,leadEntry,form,submitOk,formErr proposed;
 ```
 
 ## Parent / guardian (Proposed)

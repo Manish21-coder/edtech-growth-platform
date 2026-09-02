@@ -34,7 +34,7 @@ describe("LeadCaptureForm (HP-410..HP-413)", () => {
     fill(/your name/i, "Asha");
     fill(/phone number or email/i, "asha@example.com");
     fireEvent.change(screen.getByLabelText(/exam \/ category/i), {
-      target: { value: "neet" },
+      target: { value: "pu2-science" },
     });
     fireEvent.click(screen.getByLabelText(/parikshe may contact me/i));
     fireEvent.click(
@@ -51,7 +51,7 @@ describe("LeadCaptureForm (HP-410..HP-413)", () => {
     fill(/your name/i, "Asha");
     fill(/phone number or email/i, "duplicate@example.com");
     fireEvent.change(screen.getByLabelText(/exam \/ category/i), {
-      target: { value: "kcet" },
+      target: { value: "pu1-science" },
     });
     fireEvent.click(screen.getByLabelText(/parikshe may contact me/i));
     fireEvent.click(

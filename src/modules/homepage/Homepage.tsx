@@ -3,8 +3,6 @@ import { HeroCarousel } from "./components/HeroCarousel";
 import {
   IntroAndChips,
   WhyChoose,
-  CategoryDiscovery,
-  ScaleStats,
   AppPromo,
   StudyResources,
   FreeVsPaid,
@@ -15,6 +13,7 @@ import { ResultsCarousel } from "./components/ResultsCarousel";
 import { HomepageFaq } from "./components/HomepageFaq";
 import { SiteFooter } from "./components/SiteFooter";
 import { PromoPopup } from "./components/PromoPopup";
+import { FloatingActions } from "./components/FloatingActions";
 import { LeadCaptureCta } from "./components/LeadCaptureCta";
 import { PageViewBeacon } from "./components/PageViewBeacon";
 
@@ -58,8 +57,6 @@ export function Homepage() {
         <ExploreCourses />
         <IntroAndChips />
         <WhyChoose />
-        <CategoryDiscovery />
-        <ScaleStats />
         <AppPromo />
         <StudyResources />
         <FreeVsPaid />
@@ -81,6 +78,7 @@ export function Homepage() {
         </div>
       </div>
 
+      <FloatingActions />
       <PromoPopup />
     </>
   );
