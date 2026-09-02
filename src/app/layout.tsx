@@ -1,28 +1,38 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/**
+ * Type pairing:
+ *  - Bricolage Grotesque — display / headings (characterful, high-contrast).
+ *  - Poppins — body / UI (friendly, legible).
+ */
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "EdTech Growth Platform",
+  title:
+    "Parikshe | Karnataka's learning destination for SSLC, PUC, KCET, NEET & CA Foundation",
   description:
-    "Modular EdTech platform for lead generation, learner engagement and conversion.",
+    "Parikshe offers expert-led online courses, study material, practice tests and exam preparation for SSLC, PUC, KCET, NEET and CA Foundation students across Karnataka.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${poppins.variable} ${bricolage.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
