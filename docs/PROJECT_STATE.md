@@ -5,6 +5,16 @@ memory for anything here._
 
 Last updated: 2026-09-01
 
+## Live
+
+- **Site:** <https://manish21-coder.github.io/edtech-growth-platform/>
+- **Repo:** <https://github.com/Manish21-coder/edtech-growth-platform>
+- **Deploy:** static export (`output: "export"`) → GitHub Pages via
+  `.github/workflows/deploy.yml` on every push to `main`
+  (`NEXT_PUBLIC_BASE_PATH=/edtech-growth-platform`; `asset()` prefixes raw
+  `<img>` paths). This is a **preview host** for review/sharing — not the
+  production target (that decision is deferred; Vercel/own domain later).
+
 ## Current block
 
 | Field  | Value                                                                                                                           |
