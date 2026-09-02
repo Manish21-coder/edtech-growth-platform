@@ -144,6 +144,13 @@ section** — `hero/` (`HERO_BANNERS`, 8 desktop + 8 mobile crops) and `popup/`
 1:1 to the future admin "Banners" config. CA Foundation dropdown/Explore pills
 dropped "Nischaya – Sep'26" (kept Pro + Pro Plus).
 
+**"Why Parikshe" as a chat (2026-09-03):** conversation flow — a student
+voices a worry (white bubble, `problem`), a Parikshe mentor answers (dark navy
+bubble, gold `title` + `body`). Flat SVG avatars (`Avatars.tsx` —
+`StudentAvatar` / `MentorAvatar`, no photos) in dashed gold rings, PW-style.
+**Free vs Paid** is now a tick/cross compare table below `lg` and the two
+detailed cards (`CompareCard`) at `lg+`.
+
 **Section order (2026-09-02):** hero → **Explore courses by class** →
 **Introduction (exam picker)** → **Results** → **Student stories** → Why
 Parikshe → App → Study resources → Free vs Paid → FAQ → Contact. Tones now

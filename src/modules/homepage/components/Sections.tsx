@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { type ReactNode } from "react";
 import {
   APP_STORE,
   FREE_VS_PAID,
@@ -7,8 +8,9 @@ import {
   STUDY_RESOURCES,
   WHY_CHOOSE,
 } from "../content";
-import { Section, Card, ButtonLink, FeatureIcon } from "./primitives";
+import { Section, Card, ButtonLink } from "./primitives";
 import { Icon, GooglePlayBadge, type IconName } from "./Icon";
+import { MentorAvatar, StudentAvatar } from "./Avatars";
 import { IntroExamPicker } from "./IntroExamPicker";
 import { VideoTestimonialButton } from "./VideoTestimonialButton";
 import { Marquee } from "./Marquee";
@@ -84,9 +86,30 @@ export function IntroAndChips() {
   );
 }
 
+/** Dashed ring + accent dots around a conversation avatar (PW-style). */
+function AvatarRing({ children }: { children: ReactNode }) {
+  return (
+    <span className="border-brand-gold-600/40 relative grid h-14 w-14 shrink-0 place-items-center rounded-full border-2 border-dashed p-0.5 sm:h-[4.5rem] sm:w-[4.5rem]">
+      {children}
+      <span
+        aria-hidden="true"
+        className="absolute top-0 right-1.5 h-2 w-2 rounded-full bg-sky-400"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute -bottom-0.5 left-1 h-2 w-2 rounded-full bg-rose-400"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute right-0 bottom-3 h-1.5 w-1.5 rounded-full bg-orange-400"
+      />
+    </span>
+  );
+}
+
 /**
- * HP-040 — "the student's journey": each real problem, and how Parikshe
- * resolves it. Compact icon-left cards (1 col mobile, 2 col desktop).
+ * HP-040 — "the student's journey" as a chat: the student voices a worry, a
+ * Parikshe mentor answers. Flat vector avatars, no photos.
  */
 export function WhyChoose() {
   return (
@@ -94,30 +117,43 @@ export function WhyChoose() {
       id="why-choose"
       eyebrow="Why Parikshe"
       title="Every student worry, solved"
-      intro="Exam prep throws up the same problems again and again. Here is how Parikshe handles each one."
+      intro="The same questions come up every year. Here is how Parikshe answers them."
       tone="muted"
     >
-      <ol className="grid gap-4 sm:gap-4 lg:grid-cols-2">
+      <ol className="mx-auto flex max-w-3xl flex-col gap-9 sm:gap-12">
         {WHY_CHOOSE.map((item) => (
-          <li
-            key={item.id}
-            className="border-border bg-surface flex gap-4 rounded-2xl border p-4 sm:gap-5 sm:p-6"
-          >
-            {/* icon */}
-            <span className="bg-cta-bg text-cta-text grid h-11 w-11 shrink-0 place-items-center rounded-xl sm:h-14 sm:w-14">
-              <FeatureIcon name={item.icon} className="h-5 w-5 sm:h-7 sm:w-7" />
-            </span>
+          <li key={item.id} className="flex flex-col gap-3">
+            {/* student asks */}
+            <div className="flex items-end gap-3 sm:gap-4">
+              <AvatarRing>
+                <StudentAvatar className="h-full w-full" />
+              </AvatarRing>
+              <div className="bg-surface text-text-primary relative max-w-[80%] rounded-2xl rounded-bl-sm px-4 py-2.5 text-sm font-medium shadow-sm sm:text-[15px]">
+                <span
+                  aria-hidden="true"
+                  className="bg-surface absolute bottom-2.5 -left-1 h-2.5 w-2.5 rotate-45"
+                />
+                {item.problem}
+              </div>
+            </div>
 
-            <div>
-              <p className="inline-flex items-start gap-1.5 rounded-md bg-[#fdecec] px-2 py-0.5 text-[11px] font-semibold text-[#b3261e]">
-                <span aria-hidden="true">✕</span> {item.problem}
-              </p>
-              <p className="text-text-primary mt-2 text-base font-extrabold sm:text-lg">
-                {item.title}
-              </p>
-              <p className="text-text-muted mt-1 text-sm leading-relaxed">
-                {item.body}
-              </p>
+            {/* Parikshe answers */}
+            <div className="flex items-end justify-end gap-3 sm:gap-4">
+              <div className="bg-brand-ink relative max-w-[80%] rounded-2xl rounded-br-sm px-4 py-3 shadow-md">
+                <span
+                  aria-hidden="true"
+                  className="bg-brand-ink absolute -right-1 bottom-3 h-2.5 w-2.5 rotate-45"
+                />
+                <p className="text-brand-gold text-sm font-bold sm:text-[15px]">
+                  {item.title}
+                </p>
+                <p className="mt-1 text-sm leading-relaxed text-white/85">
+                  {item.body}
+                </p>
+              </div>
+              <AvatarRing>
+                <MentorAvatar className="h-full w-full" />
+              </AvatarRing>
             </div>
           </li>
         ))}
