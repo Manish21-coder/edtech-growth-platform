@@ -113,7 +113,7 @@ export function Icon({
   );
 }
 
-/** "Get it on Google Play" store badge (SVG recreation of the official mark). */
+/** "Get it on Google Play" store badge — SVG recreation of the official mark. */
 export function GooglePlayBadge({
   className = "h-14",
 }: {
@@ -121,52 +121,110 @@ export function GooglePlayBadge({
 }) {
   return (
     <svg
-      viewBox="0 0 180 53"
+      viewBox="0 0 646 200"
       role="img"
       aria-label="Get it on Google Play"
       className={className}
     >
+      <defs>
+        <linearGradient
+          id="gp-blue"
+          x1="46"
+          y1="52"
+          x2="96"
+          y2="102"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#00A0FF" />
+          <stop offset=".26" stopColor="#00BEFF" />
+          <stop offset=".51" stopColor="#00D2FF" />
+          <stop offset="1" stopColor="#00E3FF" />
+        </linearGradient>
+        <linearGradient
+          id="gp-yellow"
+          x1="163"
+          y1="100"
+          x2="46"
+          y2="100"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#FFE000" />
+          <stop offset=".41" stopColor="#FFBD00" />
+          <stop offset="1" stopColor="#FF9C00" />
+        </linearGradient>
+        <linearGradient
+          id="gp-red"
+          x1="120"
+          y1="112"
+          x2="30"
+          y2="200"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#FF3A44" />
+          <stop offset="1" stopColor="#C31162" />
+        </linearGradient>
+        <linearGradient
+          id="gp-green"
+          x1="35"
+          y1="30"
+          x2="90"
+          y2="120"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#32A071" />
+          <stop offset=".48" stopColor="#15CF74" />
+          <stop offset="1" stopColor="#00F076" />
+        </linearGradient>
+      </defs>
+
       <rect
-        x="0.5"
-        y="0.5"
-        width="179"
-        height="52"
-        rx="8"
+        x="1.5"
+        y="1.5"
+        width="643"
+        height="197"
+        rx="26"
         fill="#000"
         stroke="#A6A6A6"
+        strokeWidth="3"
       />
-      <g transform="translate(14 12)">
+
+      {/* Play mark */}
+      <g transform="translate(40 44)">
         <path
-          d="M0 1.2C0 .4.5-.1 1.2 0l14.6 12.7L11.9 16 0 1.2z"
-          fill="#00D3FF"
-        />
-        <path d="M0 1.2 11.9 16 0 30.8C0 30.8 0 1.2 0 1.2z" fill="#00E676" />
-        <path
-          d="m11.9 16 4.9 4.2 6.3-3.6c1-.6 1-2.5 0-3.1l-6.3-3.7L11.9 16z"
-          fill="#FFCE00"
+          d="M2 4C.6 5.5 0 7.9 0 11v90c0 3.1.6 5.5 2 7l.5.5 50.4-50.4v-4L2.5 3.5 2 4Z"
+          fill="url(#gp-blue)"
         />
         <path
-          d="M0 30.8 11.9 16l4.9 4.2L2.3 32C1.5 32.4.5 32 0 30.8z"
-          fill="#FF3D47"
+          d="m70 74-17-17 4-4 20 11c5.7 3.3 5.7 8.7 0 12l-7 3v-5Z"
+          fill="url(#gp-yellow)"
+        />
+        <path
+          d="M53 57 2.5 108.5c1.9 2 5 2.2 8.5.2L69 75 53 57Z"
+          fill="url(#gp-red)"
+        />
+        <path
+          d="M53 57 69 39 11 5.7C7.5 3.7 4.4 3.9 2.5 5.9L53 57Z"
+          fill="url(#gp-green)"
         />
       </g>
+
       <text
-        x="46"
-        y="19"
+        x="200"
+        y="72"
         fill="#fff"
-        fontSize="8"
-        fontFamily="Arial, sans-serif"
-        letterSpacing="0.8"
+        fontSize="30"
+        letterSpacing="3"
+        fontFamily="Roboto, Arial, sans-serif"
       >
         GET IT ON
       </text>
       <text
-        x="46"
-        y="38"
+        x="198"
+        y="150"
         fill="#fff"
-        fontSize="18"
-        fontWeight="600"
-        fontFamily="Arial, sans-serif"
+        fontSize="66"
+        fontWeight="500"
+        fontFamily="'Product Sans', Roboto, Arial, sans-serif"
       >
         Google Play
       </text>

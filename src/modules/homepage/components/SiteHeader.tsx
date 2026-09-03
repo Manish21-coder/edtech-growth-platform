@@ -9,6 +9,7 @@ import {
   type CourseLink,
 } from "../content";
 import { emitHomepageEvent } from "../analytics";
+import { GooglePlayBadge } from "./Icon";
 import { LeadCaptureCta } from "./LeadCaptureCta";
 
 type OpenMenu = null | "courses" | "books";
@@ -45,30 +46,13 @@ function PhoneIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
-/** Shared style for the top-level nav items (Courses / Books / Download app). */
+/** Shared style for the top-level nav buttons (Courses / Books). */
 function navItemClass(active: boolean) {
   return `inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors ${
     active
       ? "bg-surface-accent text-brand-gold-ink"
       : "text-text-primary hover:bg-surface-accent hover:text-brand-gold-ink"
   }`;
-}
-
-function DownloadIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="h-4 w-4"
-    >
-      <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" />
-    </svg>
-  );
 }
 
 function Chevron({ open }: { open: boolean }) {
@@ -367,16 +351,16 @@ export function SiteHeader() {
             href={APP_STORE.playStore}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Get the Parikshe app on Google Play"
             onClick={() =>
               emitHomepageEvent({
                 type: "cta.clicked.v1",
                 ctaId: "navbar-download-app",
               })
             }
-            className={navItemClass(false)}
+            className="focus-visible:outline-brand-gold ml-1.5 inline-flex rounded-lg transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2"
           >
-            <DownloadIcon />
-            Download app
+            <GooglePlayBadge className="h-9" />
           </a>
         </nav>
 
@@ -452,11 +436,12 @@ export function SiteHeader() {
             />
           </div>
 
-          <div className="border-border mt-4 flex flex-col gap-3 border-t pt-4">
+          <div className="border-border mt-4 flex flex-col items-start gap-3 border-t pt-4">
             <a
               href={APP_STORE.playStore}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Get the Parikshe app on Google Play"
               onClick={() => {
                 emitHomepageEvent({
                   type: "cta.clicked.v1",
@@ -464,10 +449,9 @@ export function SiteHeader() {
                 });
                 setMobileOpen(false);
               }}
-              className="border-brand-gold-600/40 bg-surface-accent text-brand-gold-ink hover:bg-cta-bg hover:text-cta-text inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-bold"
+              className="focus-visible:outline-brand-gold inline-flex rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2"
             >
-              <DownloadIcon />
-              Download app
+              <GooglePlayBadge className="h-11" />
             </a>
             <LeadCaptureCta
               label="Talk to our expert"

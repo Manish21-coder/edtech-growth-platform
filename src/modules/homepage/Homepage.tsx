@@ -41,16 +41,19 @@ export function Homepage() {
       <main id="main" className="bg-background flex-1 pb-20 sm:pb-0">
         <HeroCarousel />
 
-        <div className="bg-surface-accent border-border-strong border-b px-4 py-4 sm:px-6">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3">
+        <div className="bg-brand-ink relative z-30 px-4 py-5 sm:px-6">
+          <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 text-center sm:flex-row sm:justify-center sm:text-left">
+            <p className="text-sm text-white sm:text-base">
+              <span className="text-brand-gold font-bold">
+                Not sure which course?
+              </span>{" "}
+              Talk to a counsellor — it&rsquo;s free.
+            </p>
             <LeadCaptureCta
               label="Request a callback / counselling"
               entryPoint="hero-below"
               variant="primary"
             />
-            <span className="text-text-muted text-xs">
-              Not sure which course? Talk to a counsellor — it&rsquo;s free.
-            </span>
           </div>
         </div>
 
